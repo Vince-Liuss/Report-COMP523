@@ -27,7 +27,6 @@
 
 
 \begin{document}
-\texttt{multicol}
 \title{Summary of COMP523 Advanced Algorithm}
 \maketitle
 \chapter{Symmetry Notation}
@@ -721,7 +720,26 @@ example of topological ordering based on given graph above:\\
 \textbf{DAG implies topological ordering}:\\
 Proof by induction:
 Base case: If $G$ has one or two nodes, then $G$ has a topological ordering.\\
-Induction steps: Assume that a DAG up to \\
+Induction steps: Assume that a DAG up to $k$ nodes has a topological ordering(induction hypothesis). we will prove that a DAG with $k+1$ nodes has a topological ordering.
+\begin{itemize}
+    \item By our lemma, there is at least one source node in $G$, and let $u$ be the node.
+    \item Put $u$ at the beginning of the topological ordering.
+    \item Consider the graph $G'$, obtained by $G$ by removing $u$ and its incident edges.
+    \item $G'$ is a DAG with $k$ nodes.
+    \item It has a topological ordering $u_1,u_2,\dots,u_k$ by the induction hypothesis.
+    \item Append this ordering to $u$ to get a topological ordering of $G$.
+\end{itemize}
+\noindent
+Here is the algorithm:\\
+\begin{algorithm}[H]
+\caption{Topological Sorting}
+\begin{algorithmic}[1]
+\Procedure{TopologicalSorting}{$G$}
+\State set $v$ as source vertex
 
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
 \end{document}
  
