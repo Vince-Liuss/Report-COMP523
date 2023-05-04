@@ -744,5 +744,54 @@ Here is the algorithm:\\
 \end{algorithmic}
 \end{algorithm}
 \noindent
+Running time of the algorithm is $O(n^2)$\\
+\textbf{Modified Topological Sorting}:\\
+Running time of the algorithm is $O(n+m)$\\
+\begin{algorithm}[H]
+\caption{Modified Topological Sorting}
+\begin{algorithmic}[1]
+\Procedure{ModifiedTopologicalSorting}{$G$}
+\State $L \gets empty list$
+\State $S \gets$ set of all source vertices
+\While{$S \neq \emptyset$}
+\State remove a vertex $u$ from $S$
+\State append $u$ to $L$
+\For{each edge $(u,v)$}
+\State remove edge $(u,v)$ from $G$
+\If{$v$ is a source vertex}
+\State add $v$ to $S$
+\EndIf
+\EndFor
+\EndWhile
+\If{$G$ has edges}
+\State \Return $G$ has a cycle
+\Else
+\State \Return $L$
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\section{Finding strongly connected components}
+\textbf{connected components}: A connected component of an undirected graph is subgraph of the graph where any two nodes are connected by a path.\\
+\textbf{strongly connected components}: A strongly connected component of a directed graph is a subgraph of the graph where any two nodes are mutually reachable.(mutually reachable: there is a path from $u$ to $v$ and a path from $v$ to $u$)\\
+\textbf{Finding strongly connected components}:\\
+\textbf{Kosaraju's algorithm}:\\
+\begin{algorithm}[H]
+\caption{Kosaraju's algorithm}
+\begin{algorithmic}[1]
+\Procedure{Kosaraju}{$G$}
+\State Initialise stack $S$
+\State Select a arbitrary node $s$
+\State DFS\_tree=DFS($G,s$)
+\State $S \gets$ nodes in DFS\_tree
+\State $G^R \gets$ nodes in order of $S$
+\State DFS($G^R,s$)
+\State \Return the nodes in the DFS tree
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time of Kosaraju's algorithm}: $O(n+m)$\\
 \end{document}
  
