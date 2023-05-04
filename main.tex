@@ -735,8 +735,11 @@ Here is the algorithm:\\
 \caption{Topological Sorting}
 \begin{algorithmic}[1]
 \Procedure{TopologicalSorting}{$G$}
-\State set $v$ as source vertex
-
+\State find a source vertex $u$
+\State set $u$ as the first element of the topological ordering
+\State $G' \gets G$ with $u$ and its incident edges removed
+\State $L \gets$ \Call{TopologicalSorting}{$G'$}
+\State append $L$ to $u$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
