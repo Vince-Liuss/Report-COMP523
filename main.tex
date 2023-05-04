@@ -1106,7 +1106,24 @@ For Given example, the result of divide them into 3 clusters is:\\
 \end{equation*}
 \noindent
 
-
+\chapter{Dynamic Programming}
+\textbf{The paradigm of dynamic programming}:
+Given a problem $P$, define a sequence of subproblems, with the following properties:
+\begin{itemize}
+    \item The subproblems are ordered from the simplest to the largest
+    \item The largest problem is our original problem $P$
+    \item The optimal solution of a subproblem can be structured from the optimal solutions of smaller subproblems.
+\end{itemize}
+Solve the subproblems from the smallest to the largest. When you solve a subproblem, store the solution and use it to solve larger subproblems.\\
+\section{Weighted Interval Scheduling}
+\begin{itemize}
+    \item A set of requests $R=\{1,2,\dots,n\}$.
+    \begin{itemize}
+        \item Request $i$ has a start time $s_i$ and a finish time $f_i$, and a value $v_i$.
+        \item Alternative view: every request is an interval $[s_i,f_i]$ associated with a value $v_i$.
+    \end{itemize}
+    \item Two requests $i$ and $j$ are compatible if $[s_i,f_i]$ and $[s_j,f_j]$ do not overlap.
+\end{itemize}
 
 
 
