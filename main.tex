@@ -1,6 +1,7 @@
 \documentclass[onecolumn]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{times}
 \usepackage{float}
@@ -793,5 +794,90 @@ Running time of the algorithm is $O(n+m)$\\
 \end{algorithm}
 \noindent
 \textbf{Running time of Kosaraju's algorithm}: $O(n+m)$\\
+\textbf{Correctness of Kosaraju's algorithm}:
+\begin{itemize}
+    \item Define a meta-graph of $G$, called $G^{SCC}=(V^{SCC},E^{SCC})$.
+    \item Supposed that $G$ has strongly connected components (SCCs) $C_1,C_2,\dots,C_k$, for some $k$.
+    \item $V^{SCC} = \{C_1,C_2,\dots,C_k\}$ contains some of the SCCs of $G$.
+    \item There is an edge $(C_i,C_j)$ in $E^{SCC}$ if $G$ contains a directed edge ($x,y$) such that $x \in C_i$ and $y \in C_j$, crossing different components.
+\end{itemize}
+\noindent
+Examples:
+\begin{center}
+\begin{tikzpicture}
+\centering
+\node[shape=circle,draw=black] (A) at (0,0) {0};
+\node[shape=circle,draw=black] (B) at (2,0) {1};
+\node[shape=circle,draw=black] (C) at (2,2) {2};
+\node[shape=circle,draw=black] (D) at (0,2) {3};
+\node[shape=circle,draw=black] (E) at (4,0) {4};
+\node[shape=circle,draw=black] (F) at (4,2) {5};
+\path [->] (A) edge node[left] {} (B);
+\path [->] (B) edge node[left] {} (C);
+\path [->] (C) edge node[left] {} (E);
+\path [->] (D) edge node[left] {} (A);
+\path [->] (C) edge node[left] {} (D);
+\path [->] (E) edge node[left] {} (F);
+\end{tikzpicture}\\
+\end{center}
+\noindent
+The SCCs are $\{0,1,2,3\}$ and $\{4,5\}$.\\
+\noindent
+The meta-graph is:\\
+\begin{center}
+\begin{tikzpicture}
+\centering
+\node[shape=circle,draw=black] (A) at (0,0) {$\{0,1,2,3\}$};
+\node[shape=circle,draw=black] (B) at (2,0) {$\{4\}$};
+\node[shape=circle,draw=black] (C) at (2,2) {$\{5\}$};
+\path [->] (A) edge node[left] {} (B);
+\path [->] (B) edge node[left] {} (C);
+\end{tikzpicture}\\
+\end{center}
+\noindent
+
+
+\chapter{Greedy Algorithms}
+\textbf{The greedy approach}:
+\begin{itemize}
+    \item The goal is to find a global solution to a problem.
+    \item The solution will be built up in small consecutive steps.
+    \item For each step, we choose the best option available to us at that moment.
+\end{itemize}
+\section{Interval Scheduling}
+\textbf{Interval Scheduling}:\\
+A set of requests$R=\{1,2,\dots,n\}$.
+\begin{itemize}
+    \item Each request $i$ has a start time $s_i$ and a finish time $f_i$.
+    \item Alternative view: every request is an interval $[s_i,f_i]$.
+\end{itemize}
+Two requests $i$ and $j$ are compatible if $[s_i,f_i]$ and $[s_j,f_j]$ do not overlap.\\
+\textbf{Goal}: Find a maximum-size subset of compatible requests.\\
+\textbf{Example}:\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{figures/scheduling.png}
+    \caption{Interval Scheduling}
+    \label{fig:my_label}
+\end{figure}
+\noindent
+\textbf{Interval Scheduling Algorithm}:
+\begin{algorithm}[H]
+\caption{Interval Scheduling Algorithm}
+\begin{algorithmic}[1]
+\Procedure{IntervalScheduling}{$[s_1,f_1],[s_2,f_2],\dots,[s_n,f_n]$}
+\State $R$ is the set of requests
+\State $A \gets \emptyset$
+\While{$R \neq \emptyset$}
+\State select a request $i$ in $R$ with the smallest finishing time
+\State add $i$ to $A$
+\State remove all requests from $R$ that are incompatible with $i$
+\EndWhile
+\State \Return $A$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time of Interval Scheduling Algorithm}: $O(n^2)$\\
 \end{document}
  
