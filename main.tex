@@ -1028,5 +1028,102 @@ Add PQ to Prim's algorithm.\\
 \noindent
 \textbf{Running time of Optimal with Priorty Queue}: $O(m\log n)$\\
 
+\section{Clustering}
+\begin{itemize}
+    \item a collection of $n$ objects
+    \item they have different degrees of similarity
+    \item we want to organise them into coherent groups
+    \item there is a notion of distance between objects
+\end{itemize}
+\noindent
+\textbf{Definition}:
+\begin{itemize}
+    \item Given a set $U$ of $n$ elements, a $k-$clustering of $U$ is a partition of $U$ into non-empty subsets $C_1,C_2,\dots,C_k$.
+    \item The spacing of a $k-$clustering is the minimum distance between any pair of points in different clusters.
+\end{itemize}
+\textbf{Goal}:Among all possible $k-$clusterings, find one with minimum spacing.\\
+\textbf{Example}:\\
+\begin{center}
+\begin{tikzpicture}
+\centering
+\node[shape=circle,draw=black] (A) at (1,1) {a};
+\node[shape=circle,draw=black] (B) at (2,0) {b};
+\node[shape=circle,draw=black] (C) at (2,2) {c};
+\node[shape=circle,draw=black] (D) at (0,2) {d};
+\node[shape=circle,draw=black] (E) at (4,0) {e};
+\node[shape=circle,draw=black] (F) at (4,2) {f};
+\node[shape=circle,draw=black] (G) at (8,0) {g};
+\node[shape=circle,draw=black] (H) at (6,1) {h};
+\path [-] (A) edge node[left] {4} (B);
+\path [-] (A) edge node[left] {3} (C);
+\path [-] (A) edge node[left] {1} (D);
+\path [-] (B) edge node[left] {2} (C);
+\path [-] (B) edge node[left] {3} (E);
+\path [-] (C) edge node[left] {5} (D);
+\path [-] (C) edge node[left] {4} (F);
+\path [-] (E) edge node[left] {4} (G);
+\path [-] (E) edge node[left] {2} (F);
+\path [-] (F) edge node[left] {1} (H);
+\path [-] (G) edge node[left] {2} (H);
+\path [-] (E) edge node[left] {4} (H);
+\end{tikzpicture}\\
+\end{center}
+\textbf{Greedy approach}:\\
+\begin{itemize}
+    \item Pick two objects $p_i$ and $p_j$ with minimum distance $d(p_i,p_j)$.
+    \item Connect them with an edge $e=(p_i,p_j)$.
+    \item Continue like this until we have $k$ clusters.
+    \item If the edge $e$ under consideration connects two object $p_i$ and $p_j$ already in the same cluster, then discard $e$.
+\end{itemize}
+\textbf{kruskals algorithm}:
+\begin{algorithm}[H]
+\caption{kruskals algorithm for clustering}
+\begin{algorithmic}[1]
+    \Require A graph $G = (V,E)$
+    \Ensure A minimum spanning tree of $G$ with $k$ clusters
+    
+    \Procedure{Kruskal}{$G,k$}
+      \State $T \gets \emptyset$
+      \State $C \gets \{ \{v\} \mid v \in V \}$ \Comment{Initial clusters}
+      \State Sort edges in $E$ in increasing order of weight
+      \For{$\{u,v\} \in E$}
+        \If{$C$ contains $k$ clusters}
+          \State \textbf{break}
+        \EndIf
+        \If{clusters containing $u$ and $v$ are different in $C$}
+          \State $T \gets T \cup \{\{u,v\}\}$
+          \State merge clusters containing $u$ and $v$ in $C$
+        \EndIf
+      \EndFor
+      \State \textbf{return} $T$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+For Given example, the result of divide them into 3 clusters is:\\
+\begin{equation*}
+    \{a,b,c,d\},\{e,f,h\},\{g\}
+\end{equation*}
+\noindent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
