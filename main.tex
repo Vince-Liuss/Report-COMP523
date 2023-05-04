@@ -878,9 +878,155 @@ Two requests $i$ and $j$ are compatible if $[s_i,f_i]$ and $[s_j,f_j]$ do not ov
 \end{algorithmic}
 \end{algorithm}
 \noindent
+\textbf{Running time of Interval Scheduling Algorithm}: $O(n\log n)$\\
 \textbf{Correctness of Interval Scheduling Algorithm}:
 Since the algorithm always selects the request with the smallest finishing time, it is clear that the algorithm will always select a compatible request.\\
 \textbf{Arguing optimality}:\\
 
+
+\section{Minimum Spanning Trees}
+Consider a connected graph $G=(V,E)$, such that each edge $e=(v,w)$ of $E$, there is an associated cost $c_e$.\\
+\textbf{Goal}: Find a spanning tree $T$ of $E$ so that the graph $G'=(V,T)$ has minimum cost.\\
+\textbf{Example}:\\
+\begin{center}
+\begin{tikzpicture}
+\centering
+\node[shape=circle,draw=black] (A) at (1,1) {a};
+\node[shape=circle,draw=black] (B) at (2,0) {b};
+\node[shape=circle,draw=black] (C) at (2,2) {c};
+\node[shape=circle,draw=black] (D) at (0,2) {d};
+\node[shape=circle,draw=black] (E) at (4,0) {e};
+\node[shape=circle,draw=black] (F) at (4,2) {f};
+\node[shape=circle,draw=black] (G) at (8,0) {g};
+\node[shape=circle,draw=black] (H) at (6,1) {h};
+\path [-] (A) edge node[left] {4} (B);
+\path [-] (A) edge node[left] {3} (C);
+\path [-] (A) edge node[left] {1} (D);
+\path [-] (B) edge node[left] {2} (C);
+\path [-] (B) edge node[left] {3} (E);
+\path [-] (C) edge node[left] {5} (D);
+\path [-] (C) edge node[left] {4} (F);
+\path [-] (E) edge node[left] {4} (G);
+\path [-] (E) edge node[left] {2} (F);
+\path [-] (F) edge node[left] {1} (H);
+\path [-] (G) edge node[left] {2} (H);
+\path [-] (E) edge node[left] {4} (H);
+\end{tikzpicture}\\
+\end{center}
+
+\textbf{Greedy approach 1}:\\
+\begin{itemize}
+    \item Start with an empty set of edges $T$.
+    \item Repeat until $T$ forms a spanning tree:
+    \begin{itemize}
+        \item Select an edge $e$ of minimum cost.
+        \item If $T \cup \{e\}$ does not contain a cycle, then add $e$ to $T$.
+    \end{itemize}
+\end{itemize}
+\textbf{krukals algorithm}:
+\begin{algorithm}[H]
+\caption{Krukals algorithm}
+\begin{algorithmic}[1]
+\Procedure{Krukals}{$G$}
+\State $T \gets \emptyset$
+\While{$T$ is not a spanning tree}
+\State select an edge $e$ of minimum cost
+\If{$T \cup \{e\}$ does not contain a cycle}
+\State add $e$ to $T$
+\EndIf
+\EndWhile
+\State \Return $T$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\noindent
+\textbf{Running time of Krukals algorithm}: $O(m\log n)$\\
+\textbf{Greedy approach 2}:
+\begin{itemize}
+    \item Start with an empty set of edges $T$.
+    \item Start with a node $s$.
+    \begin{itemize}
+        \item Add an edge $e=(s,v)$ of minimum cost to $T$.
+    \end{itemize}
+    \item Repeat until $T$ forms a spanning tree:
+\end{itemize}
+\textbf{Prims algorithm}:
+\begin{algorithm}[H]
+\caption{Prims algorithm}
+\begin{algorithmic}[1]
+\Procedure{Prims}{$G$}
+\State $T \gets \emptyset$
+\State $s \gets$ an arbitrary node
+\While{$T$ is not a spanning tree}
+\State add an edge $e=(s,v)$ of minimum cost to $T$
+\State $s \gets v$
+\EndWhile
+\State \Return $T$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time of Prims algorithm}: $O(m\log n)$\\
+\textbf{minimum spanning tree of example graph}:\\
+the minimum spanning tree sequence is $d,a,c,b,e,f,h,g$.\\
+\noindent
+
+\textbf{Greedy approach 3}:\\
+\begin{itemize}
+    \item Start with the full graph $G=(V,E)$.
+    \item Delete an edge from $G$
+    \begin{itemize}
+        \item the edge of maximum cost
+    \end{itemize}
+    \item Repeat until $G$ forms a spanning tree:
+\end{itemize}
+\textbf{Reverse-delete algorithm}:
+\begin{algorithm}[H]
+\caption{Reverse-delete algorithm}
+\begin{algorithmic}[1]
+\Procedure{ReverseDelete}{$G$}
+\State $T \gets G$
+\While{$T$ is not a spanning tree}
+\State delete an edge $e$ of maximum cost from $T$
+\EndWhile
+\State \Return $T$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+For when two edges have the same cost, use distinct labels to distinguish them.\\
+
+\noindent
+\textbf{Optimal with Priorty Queue}:\\
+Add PQ to Prim's algorithm.\\
+\begin{algorithm}[H]
+\caption{Optimal with Priorty Queue}
+\begin{algorithmic}[1]
+\Procedure{Optimal}{$G$}
+\State $T \gets \emptyset$
+\State $s \gets$ an arbitrary node
+\State $PQ \gets$ empty priority queue
+\For{each node $v$}
+\State add $v$ to $PQ$ with key $\infty$
+\EndFor
+\State decrease key of $s$ to 0
+\While{$PQ$ is not empty}
+\State $v \gets$ node with minimum key in $PQ$
+\State add an edge $e=(s,v)$ of minimum cost to $T$
+\State $s \gets v$
+\For{each edge $e=(v,w)$ incident to $v$}
+\If{$w$ is in $PQ$}
+\State decrease key of $w$ to $c_e$
+\EndIf
+\EndFor
+\EndWhile
+\State \Return $T$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time of Optimal with Priorty Queue}: $O(m\log n)$\\
+
+
 \end{document}
- 
