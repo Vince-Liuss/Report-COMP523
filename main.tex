@@ -1124,7 +1124,184 @@ Solve the subproblems from the smallest to the largest. When you solve a subprob
     \end{itemize}
     \item Two requests $i$ and $j$ are compatible if $[s_i,f_i]$ and $[s_j,f_j]$ do not overlap.
 \end{itemize}
-\textbf{Why it not working with greedy approach?}\\
+\textbf{build up a solution}:
+\begin{enumerate}
+    \item let $O$ the optimal solution
+    \item $O$ contains an optimal solution $O'$ of the subproblem $R'=\{1,2,\dots,i-1\}$
+    \item in order to find $O$, it suffices to look at smaller problems and find $O(1,2,\dots,j)$ for some $j$
+    \item Let $O_j$ be a shorthand for $O(1,2,\dots,j)$ and let $OPT(j)$ be its total value.
+    \item Define $OPT(0)=0$
+    \item Then $O=O_n$ with value $OPT(n)$
+    \item $OPT(j)$ can be computed from $OPT(j-1)$
+    \item $OPT(j)=\max\{OPT_{p_j}+v_j,OPT(j-1)\}$
+\end{enumerate}
+
+\begin{algorithm}[H]
+\caption{ComputeOPT}
+\begin{algorithmic}[1]
+    \Procedure{ComputeOPT}{$j$}
+        \If{$j=0$}
+            \State \textbf{return} $0$
+        \Else
+            \State \textbf{return} $\max\{\textsc{ComputeOPT}(p_j)+v(j),\textsc{ComputeOPT}(j-1)\}$
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Correctness}:
+ComputeOPT(j) correctly computes $OPT(j)$ for all $j=0,1,\dots,n$.\\
+Proof by induction:\\
+\textbf{Base case}: $OPT(0)=0$ by definition.\\
+\textbf{Inductive step}: Assume that it is true for all $i<j$.(Induction hypothesis)\\
+return $\max\{\textsc{ComputeOPT}(p_j)+v(j),\textsc{ComputeOPT}(j-1)\}$\\
+\noindent
+\textbf{Running time}: $\Omega(2^n)$\\
+\textbf{Memoization}:
+\begin{itemize}
+    \item Compute ComputeOPT(j) for all $j=0,1,\dots,n$.
+    \item Store it in an accessible place to use again later.
+    \item Keep an array $M[0,\dots,n]$.
+    \begin{itemize}
+        \item initially $M[j]=\textsc{empty}$ for all $j=0,1,\dots,n$.
+        \item when ComputeOPT(j) is called, $M[j]=$ ComputeOPT(j).
+    \end{itemize}
+\end{itemize}
+\begin{algorithm}[H]
+\caption{M-ComputeOPT}
+\begin{algorithmic}
+    \Procedure{M-ComputeOPT}{$j$}
+        \If {$j=0$}
+            \State \textbf{return} $0$
+        \ElsIf {$M[j]$ is not empty}
+            \State \textbf{return} $M[j]$
+        \Else
+            \State $M[j] \gets \max\{\textsc{M-ComputeOPT}(p_j)+v(j),\textsc{M-ComputeOPT}(j-1)\}$
+            \State \textbf{return} $M[j]$
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time}: $O(n \log n)$\\
+\begin{algorithm}[H]
+\caption{Find-Solution}
+\begin{algorithmic}
+    \Procedure{Find-Solution}{$j$}
+        \If {$j=0$}
+            \State \textbf{return} $\emptyset$
+        \Else 
+            \If $v(j)+\textsc{M-ComputeOPT}(p_j)>\textsc{M-ComputeOPT}(j-1)$
+                \State \textbf{return} $\{j\} \cup \textsc{Find-Solution}(p_j)$
+            \Else
+                \State \textbf{return} $\textsc{Find-Solution}(j-1)$
+            \EndIf
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\clearpage
+\noindent
+\textbf{Dynamic Programming vs Divide and Conquer}:
+\begin{multicols}{2}
+\noindent
+\textbf{Dynamic Programming}:
+\begin{itemize}
+    \item DP is an optimisation techniques and is only applicable to problems that have optimal substructure.
+    \item DP splits the problem into parts, finds solutions to the parts and joins them.(The parts are not significantly smaller than the original problem and are overlapping.)
+    \item In DP, the subproblems dependency can be represented by a directed acyclic graph.
+\end{itemize}
+\columnbreak
+\textbf{Divide and Conquer}:
+\begin{itemize}
+    \item DC is not normally used for optimisation problems.
+    \item DC splits the problem into parts, finds solutions to the parts and joins them.(The parts are significantly smaller than the original problem and are non-overlapping.)
+    \item In DC, the subproblems dependency can be represented by a tree.
+\end{itemize}
+\end{multicols}
+\noindent
+\section{Subset Sum}
+\textbf{Problem Discription}:
+\begin{itemize}
+    \item Given a set of $n$ items ${1,2,\dots,n}$
+    \item Each item $i$ has a non-negative weight $w_i$.
+    \item Given a bound $W$.
+    \item \textbf{Goal}: select a subset $S$ of items such that $\sum_{i\in S}w_i\leq W$ and $\sum_{i\in S}w_i$ is maximised.
+\end{itemize}
+Dynamic Programming:
+To find the optimal value of $OPT(n)$, we need
+\begin{itemize}
+    \item the optimal value of $OPT(n-1)$ if item $n$ is not selected.
+    \item the optimal value of the solution on input {1,2,\dots,n-1} with weight bound $W-w_n$.
+\end{itemize}
+subproblems:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
