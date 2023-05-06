@@ -1222,7 +1222,7 @@ return $\max\{\textsc{ComputeOPT}(p_j)+v(j),\textsc{ComputeOPT}(j-1)\}$\\
 \end{multicols}
 \noindent
 \section{Subset Sum}
-\textbf{Problem Discription}:
+\textbf{Problem Description}:
 \begin{itemize}
     \item Given a set of $n$ items ${1,2,\dots,n}$
     \item Each item $i$ has a non-negative weight $w_i$.
@@ -1236,11 +1236,86 @@ To find the optimal value of $OPT(n)$, we need
     \item the optimal value of the solution on input {1,2,\dots,n-1} with weight bound $W-w_n$.
 \end{itemize}
 subproblems:
+\begin{itemize}
+    \item Assumptions:
+    \begin{itemize}
+        \item $W$ is an integer
+        \item Every $w_i$ is an integer
+    \end{itemize}
+    \item subproblem for each $i=0,1,\dots,n$ and each integer $0 \leq w \leq W$.
+    \item Let $OPT(i,w)$ be the optimal value of the solution on subset ${1,2,\dots,i}$ with weight bound $w$.
+\end{itemize}
+\begin{algorithm}[H]
+\caption{SubsetSum}
+\begin{algorithmic}
+    \Procedure{SubsetSum}{$n,w$}
+        \State Array $M[0,\dots,n,0,\dots,W]$
+        \State $M[0,w]=0$ for each $w=0,1,\dots,W$
+        \For {$i=1$ to $n$}
+            \For {$w=0$ to $W$}
+                \If {$w_i>w$}
+                    \State $M[i,w]=M[i-1,w]$
+                \Else
+                    \State $M[i,w]=\max\{M[i-1,w],M[i-1,w-w_i]+w_i\}$
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \textbf{return} $M[n,W]$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time}: $O(nW)$\\
 
 
+\section{knapSack}
+\textbf{Problem Description}:
+\begin{itemize}
+    \item Given a set of $n$ items ${1,2,\dots,n}$
+    \item Each item $i$ has a non-negative weight $w_i$ and a non-negative value $v_i$.
+    \item Given a bound $W$.
+    \item \textbf{Goal}: select a subset $S$ of items such that $\sum_{i\in S}w_i\leq W$ and $\sum_{i\in S}v_i$ is maximised.
+\end{itemize}
+\textbf{the fractional knapsack problem}:
+\begin{itemize}
+    \item Given a set of $n$ items ${1,2,\dots,n}$
+    \item Each item $i$ has a non-negative weight $w_i$ and a non-negative value $v_i$.
+    \item Given a bound $W$.
+    \item \textbf{Goal}: select a fraction $x_i$ of each item $i$ such that $\sum_{i\in S}w_ix_i\leq W$ and $\sum_{i\in S}v_ix_i$ is maximised.
+\end{itemize}
+\textbf{The 0/1 knapsack problem}:
+Solution for 0/1 knapsack problem:
+\begin{algorithm}
+\caption{0/1 knapsack in dynamic programming}
+\begin{algorithmic}
+    \Procedure{0/1 knapsack}{$n,W$}
+        \State Array $M[0,\dots,n,0,\dots,W]$
+        \State $M[0,w]=0$ for each $w=0,1,\dots,W$
+        \For {$i=1$ to $n$}
+            \For {$w=0$ to $W$}
+                \If {$w_i>w$}
+                    \State $M[i,w]=M[i-1,w]$
+                \Else
+                    \State $M[i,w]=\max\{M[i-1,w],M[i-1,w-w_i]+v_i\}$
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \textbf{return} $M[n,W]$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
-
-
+\chapter{Network Flow}
+\section{Network Flow Definitions}
+\textbf{Flow network}:
+A flow network is a directed graph $G=(V,E)$ with the following properties:
+\begin{itemize}
+    \item Each edge $(u,v)\in E$ has a non-negative capacity $c_e$.
+    \item There is a single source $s$ in $V$.
+    \item There is a single sink $t$ in $V$.
+    \item All other nodes in $V-\{s,t\}$ are called intermediate nodes.
+\end{itemize}
+example:
 
 
 
