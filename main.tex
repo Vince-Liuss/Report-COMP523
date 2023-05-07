@@ -1,8 +1,6 @@
 \documentclass[onecolumn]{report}
 \usepackage{sharina}
 
-
-
 \begin{document}
 \title{Summary of COMP523 Advanced Algorithm}
 \maketitle
@@ -1341,12 +1339,74 @@ Similarly, define $f^{out}(S)$ and $f^{in}(S)$ for sets of nodes $S$.\\
 \textbf{The maximum flow problem}: Given a flow network $G=(V,E)$, find a flow of maximum possible value.\\
 \textbf{algorithm for maximum flow}:\\
 Idea: push flow forward on edges with leftover capacity, push flow backward on edges that are already carrying flow.\\
+\noindent
+\textbf{The residual graph $G_f$}:\\
+The residual graph $G_f$ of $G$(also called the flow network) is defined as follows:
+\begin{itemize}
+    \item The node set  $V_f$ of $G_f$ is the same as the node set $V$.
+    \item For each edge $(u,v)\in E$ which $f(e) < c_e$, there are $c_e-f(e)$ "leftover" units of capacity.
+    \begin{itemize}
+        \item We will call this number the \textbf{residual capacity} of edge $e$.
+        \item We will call the edge $e$ a forward edge.
+    \end{itemize}
+    \item For each edge $(u,v)\in E$ with $f(e)>0$, there is an edge $e'= (v,u)$ in $E_f$ with a capacity of $f(e)$.We will call the edge $e'$ a backward edge.
+\end{itemize}
 
+\textbf{Working with residual graphs}:
+\begin{itemize}
+    \item Find an $(s-t)$ path $P$ in $G_f$. This is called an \textbf{augmenting path}.
+    \item Define the bottleneck of $P$,
+    \begin{itemize}
+        \item Denoted bottleneck$(P,f)$
+        \item to be the minimum residual capacity of any edge in $P$.
+    \end{itemize}
+    \item Define the augmentation of flow $f$ into flow $f'$
+    \begin{itemize}
+        \item Denoted augment$(f,P)$.
+    \end{itemize}
+\end{itemize}
 
-
-
-
-
+\textbf{Augmenting the flow}:\\
+\begin{algorithm}
+\caption{Augmenting the flow}
+\begin{algorithmic}[1]
+    \Procedure{Augment}{$f,P$}
+        \State $b \gets \text{bottleneck}(P,f)$
+        \For{each edge $e=(u,v)\in P$}
+            \If{$e$ is a forward edge}
+                \State $f(e) \gets f(e)+b$
+            \Else
+                \State $f(e) \gets f(e)-b$
+            \EndIf
+        \EndFor
+        \State \textbf{return} $f$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+Feasibility of capacity:\\
+consider an arbitrary edge $e=(u,v)\in P$. Suppose that $e$ is a forward edge.
+\begin{equation*}
+    0 \leq f(e) \leq f'(e) = f(e)+b \leq f(e)+(c_e-f(e))=c_e
+\end{equation*}
+Suppose that $e$ is a backward edge.
+\begin{equation*}
+    c_e \geq f(e) \geq f'(e) = f(e)-b \geq f(e)-(f(e)-0)=0
+\end{equation*}
+\noindent
+\textbf{The Ford-Fulkerson algorithm}:\\
+\begin{algorithm}[H]
+\caption{Max-flow algorithm}
+\begin{algorithmic}[1]
+    \Procedure{Max-flow}{$G,s,t$}
+        \State $f \gets 0$
+        \While{there exists an $(s-t)$ path $P$ in $G_f$}
+            \State $f \gets \text{augment}(f,P)$
+        \EndWhile
+        \State \textbf{return} $f$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 
 
