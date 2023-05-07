@@ -1417,13 +1417,48 @@ Suppose that $e$ is a backward edge.
 \section{Min Cut theorem}
 A cut $C$ is a partition of the nodes of $G$ into two sets $S$ and $T$ such that $s\in S$ and $t\in T$.\\
 The capacity of a cut $C=(S,T)$ of a cut $C$ is the sum of the capacities of the edges "out of" $S$: these are edges $(u,v)$ such that $u\in S$ and $v\in T$.\\
+
+\noindent
 \textbf{The min-cut theorem}: In every flow network, the value of the maximum flow is equal to the capacity of the minimum cut.\\
+\noindent
+\textbf{A series of facts}:\\
+Fact 1: Let $f$ be any $(s-t)$ flow and let $(S,T)$ be any cut. Then $v(f)=f^{out}(S)-f^{in}(S)$.\\
+\begin{enumerate}
+    \item By definition, $v(f)=f^{out}(s)$.
+    \item By definition $f^{in}(s)=0$.
+    \item Hence, $v(f)=f^{out}(s)-f^{in}(s)$.
+    \item For every other node $v \neq s,t$, we have $f^{out}(v)=f^{in}(v)$.
+    \item Therefore, $v(f)=\sum_{v\in S}(f^{out}(v)-f^{in}(v))$.
+    \item rewrite as $v(f)=\sum_{v\in S}(f^{out}(v)-f^{in}(v))=\sum_{e \: \text{out of} \: S}f(e)-\sum_{e \: \text{into} \: S}f(e)=f^{out}(S)-f^{in}(S)$.
+\end{enumerate}
+Fact 2: Let $f$ be any $(s-t)$ flow and let $(S,T)$ be any $(s-t)$ cut. Then $v(f)=f^{out}(T)-f^{in}(T)$.\\
+Fact 3: Let $f$ be any $(s-t)$ flow and let $(S,T)$ be any $(s-t)$ cut. Then $v(f) \leq c(S,T)$.\\
+\begin{align*}
+    v(f) &= f^{out}(S)-f^{in}(S)\\
+    &\leq f^{out}(S)\\
+    &= \sum_{e \: \text{out of} \: S}f(e)\\
+    &\leq \sum_{e \: \text{out of} \: S}c(e)\\
+    &= c(S,T)
+\end{align*}
+Fact 4: Let $f$ be any $(s-t)$ flow in $G$ such that the residual graph $G_f$ contains no augmenting paths. Then there exists an $(s-t)$ cut $(S^*,T^*)$ such that $v(f)=c(S^*,T^*)$.\\
+Proving fact 4: In the residual graph $G_f$, identify all nodes that are reachable from the source $s$. Let $S^*$ be the set of these nodes, and let $T^*=V-S^*$.
+\begin{enumerate}
+    \item $s\in S^*$ and $t\in T^*$.
+    \item No edge of $G_f$ crosses from $S^*$ to $T^*$.
+    \item Every edge of $G_f$ crosses from $T^*$ to $S^*$.
+    \item $f^{out}(S^*)=v(f)$.
+    \item $f^{in}(S^*)=0$.
+    \begin{align*}
+        v(f) &= f^{out}(S^*)-f^{in}(S^*)\\
+        &= \sum_{e \: \text{out of} \: S^*}f(e)-\sum_{e \: \text{into} \: S^*}f(e)\\
+        &= \sum_{e \: \text{out of} \: S^*}c(e)-0
+        &= c(S^*,T^*)
+    \end{align*}
+\end{enumerate}
+Fact 5: If all capacities are integers, then there exists a maximum flow $f$ for which $f(e)$ is an integer for every edge $e$.\\
 
 
-
-
-
-
+\section{Choosing Better Augmenting Paths}
 
 
 

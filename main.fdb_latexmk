@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1683466089 "/Users/liujinlong/Report-COMP523/main.tex" "main.pdf" "main" 1683466090 0
-  "/Users/liujinlong/Report-COMP523/main.tex" 1683466089 52055 90b85b7d44eaecf8f13896596bfa0f49 ""
+["pdflatex"] 1683477152 "/Users/liujinlong/Report-COMP523/main.tex" "main.pdf" "main" 1683477153 0
+  "/Users/liujinlong/Report-COMP523/main.tex" 1683477152 54058 5ddbd7e0e6d12b0d7a3e0088efafa838 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -34,6 +34,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1136849748 44729 811d6c62865936705a31c797a1d5dada ""
@@ -185,9 +186,9 @@
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1678192166 7879925 ae3d476ab8fcfbb8a3c92cf4eeeebf3f ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "figures/scheduling.png" 1683202598 50483 5355da8b35eab5edeb15e47c9f1ff5cb ""
-  "main.aux" 1683466090 9536 1208bf70eb6fa5211f7326d8a4192511 "pdflatex"
-  "main.out" 1683466090 6200 06554e8dc3ccc61075e68898e1e20ecd "pdflatex"
-  "main.tex" 1683466089 52055 90b85b7d44eaecf8f13896596bfa0f49 ""
+  "main.aux" 1683477153 9670 831f72b148d10b6afea91b68d2305846 "pdflatex"
+  "main.out" 1683477153 6424 8f38542a66f3a0a2de91946b9c2c2522 "pdflatex"
+  "main.tex" 1683477152 54058 5ddbd7e0e6d12b0d7a3e0088efafa838 ""
   "sharina.sty" 1683463190 832 dd908aa8f47c950f5055f64bf9019395 ""
   (generated)
   "main.aux"
