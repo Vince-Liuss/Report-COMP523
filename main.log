@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.7)  7 MAY 2023 14:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.7)  7 MAY 2023 14:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -975,7 +975,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 797--801
 
 [16]
 Chapter 4.
-<figures/scheduling.png, id=246, 780.9175pt x 593.21625pt>
+<figures/scheduling.png, id=254, 780.9175pt x 593.21625pt>
 File: figures/scheduling.png Graphic file (type png)
 <use figures/scheduling.png>
 Package pdftex.def Info: figures/scheduling.png  used on input line 833.
@@ -1078,27 +1078,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 1334--1337
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1395--1409
+Underfull \hbox (badness 10000) in paragraph at lines 1396--1412
 
  []
 
-[27] [28] (./main.aux)
+[27]
+Underfull \hbox (badness 10000) in paragraph at lines 1413--1415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1418--1421
+
+ []
+
+[28] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 25A476B953A61BCC78C0B850CE7A4A1F;5903.
+(rerunfilecheck)             Checksum: 06554E8DC3CCC61075E68898E1E20ECD;6200.
  ) 
 Here is how much of TeX's memory you used:
- 23171 strings out of 476024
- 426626 string characters out of 5790019
+ 23175 strings out of 476024
+ 426674 string characters out of 5790019
  1874388 words of memory out of 5000000
- 43107 multiletter control sequences out of 15000+600000
+ 43109 multiletter control sequences out of 15000+600000
  539497 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,10n,103p,441b,778s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (29 pages, 239057 bytes).
+Output written on main.pdf (29 pages, 240034 bytes).
 PDF statistics:
- 393 PDF objects out of 1000 (max. 8388607)
- 335 compressed objects within 4 object streams
- 98 named destinations out of 1000 (max. 500000)
- 306 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 401 PDF objects out of 1000 (max. 8388607)
+ 343 compressed objects within 4 object streams
+ 100 named destinations out of 1000 (max. 500000)
+ 322 words of extra memory for PDF output out of 10000 (max. 10000000)
 

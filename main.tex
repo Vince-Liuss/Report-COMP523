@@ -1336,6 +1336,7 @@ Generally, define $f^{out}(v)$ and $f^{in}(v)$ for the flow going out of(resp. g
 Similarly, define $f^{out}(S)$ and $f^{in}(S)$ for sets of nodes $S$.\\
 
 \noindent
+\section{Maximum Flow Problem}
 \textbf{The maximum flow problem}: Given a flow network $G=(V,E)$, find a flow of maximum possible value.\\
 \textbf{algorithm for maximum flow}:\\
 Idea: push flow forward on edges with leftover capacity, push flow backward on edges that are already carrying flow.\\
@@ -1399,19 +1400,24 @@ Suppose that $e$ is a backward edge.
 \caption{Max-flow algorithm}
 \begin{algorithmic}[1]
     \Procedure{Max-flow}{$G,s,t$}
-        \State $f \gets 0$
+        \State $f(e) \gets 0$ for all edges $e\in E$
         \While{there exists an $(s-t)$ path $P$ in $G_f$}
             \State $f \gets \text{augment}(f,P)$
+            \State $f' \gets \text{update} (f)$
+            \State $G_f \gets \text{update}(G_f,f)$
         \EndWhile
         \State \textbf{return} $f$
     \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+\noindent
+\textbf{Running time of Ford-Fulkerson algorithm}: $O(mC)$, where $C$ is the maximum capacity of any edge in the network.\\
 
 
-
-
-
+\section{Min Cut theorem}
+A cut $C$ is a partition of the nodes of $G$ into two sets $S$ and $T$ such that $s\in S$ and $t\in T$.\\
+The capacity of a cut $C=(S,T)$ of a cut $C$ is the sum of the capacities of the edges "out of" $S$: these are edges $(u,v)$ such that $u\in S$ and $v\in T$.\\
+\textbf{The min-cut theorem}: In every flow network, the value of the maximum flow is equal to the capacity of the minimum cut.\\
 
 
 
