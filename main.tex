@@ -1459,12 +1459,217 @@ Fact 5: If all capacities are integers, then there exists a maximum flow $f$ for
 
 
 \section{Choosing Better Augmenting Paths}
+\textbf{The Edmonds-Karp algorithm}:\\
+\begin{algorithm}[H]
+\caption{Edmonds-Karp algorithm}
+\begin{algorithmic}[1]
+    \Procedure{Edmonds-Karp}{$G,s,t$}
+        \State $f(e) \gets 0$ for all edges $e\in E$
+        \While{there exists an $(s-t)$ path $P$ in $G_f$}
+            \State $P$ is a shortest $(s-t)$ path
+            \State $f \gets \text{augment}(f,P)$
+            \State $f' \gets \text{update} (f)$
+            \State $G_f \gets \text{update}(G_f,f)$
+        \EndWhile
+        \State \textbf{return} $f$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Running time of Edmonds-Karp algorithm}: $O(nm^2)$, where $n$ is the number of nodes and $m$ is the number of edges in the network.\\
+The shortest path can be found in $O(m)$ time using BFS.\\
 
+\section{Modeling with Network Flows}
+\textbf{Bipartite graphs}: A graph $G=(V,E)$ is bipartite if any only if it can be partitioned into two sets $A$ and $B$ such that every edge has one endpoint in $A$ and one endpoint in $B$.\\
+\textbf{Maximum bipartite matching}:\\
+Matching: A subset $M$ of edges $E$ such that each node $v \in V$ appears in at most one edge $e \in M$.\\
+Maximum matching: A matching with maximum cardinality.\\
+\noindent
+examples of bipartite graphs:\\
+\begin{center}
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,-1) {B};
+    \node[shape=circle,draw=black] (C) at (0,-2) {C};
+    \node[shape=circle,draw=black] (D) at (0,-3) {D};
+    \node[shape=circle,draw=black] (E) at (0,-4) {E};
+    \node[shape=circle,draw=black] (H) at (4,0) {H};
+    \node[shape=circle,draw=black] (I) at (4,-1) {I};
+    \node[shape=circle,draw=black] (J) at (4,-2) {J};
+    \node[shape=circle,draw=black] (K) at (4,-3) {K};
+    \node[shape=circle,draw=black] (L) at (4,-4) {L};
+    \draw (A) -- (H);
+    \draw (B) -- (H);
+    \draw (B) -- (I);
+    \draw (B) -- (J);
+    \draw (C) -- (J);
+    \draw (C) -- (K);
+    \draw (C) -- (L);
+    \draw (D) -- (L);
+    \draw (E) -- (L);
+\end{tikzpicture}
+\end{center}
+\noindent
+\begin{multicols}{2}
+example of maximum bipartite matching:\\
+\begin{center}
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,-1) {B};
+    \node[shape=circle,draw=black] (C) at (0,-2) {C};
+    \node[shape=circle,draw=black] (D) at (0,-3) {D};
+    \node[shape=circle,draw=black] (E) at (0,-4) {E};
+    \node[shape=circle,draw=black] (H) at (4,0) {H};
+    \node[shape=circle,draw=black] (I) at (4,-1) {I};
+    \node[shape=circle,draw=black] (J) at (4,-2) {J};
+    \node[shape=circle,draw=black] (K) at (4,-3) {K};
+    \node[shape=circle,draw=black] (L) at (4,-4) {L};
+    \draw (A) -- (H);
+    \draw (B) -- (I);
+    \draw (C) -- (J);
+    \draw (E) -- (L);
+\end{tikzpicture}
+\end{center}
+\columnbreak
+exapmle of maximal bipartite matching:\\
+\begin{center}
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,-1) {B};
+    \node[shape=circle,draw=black] (C) at (0,-2) {C};
+    \node[shape=circle,draw=black] (D) at (0,-3) {D};
+    \node[shape=circle,draw=black] (E) at (0,-4) {E};
+    \node[shape=circle,draw=black] (H) at (4,0) {H};
+    \node[shape=circle,draw=black] (I) at (4,-1) {I};
+    \node[shape=circle,draw=black] (J) at (4,-2) {J};
+    \node[shape=circle,draw=black] (K) at (4,-3) {K};
+    \node[shape=circle,draw=black] (L) at (4,-4) {L};
+    \draw (A) -- (H);
+    \draw (B) -- (H);
+    \draw (B) -- (I);
+    \draw (B) -- (J);
+    \draw (C) -- (J);
+    \draw (C) -- (K);
+    \draw (C) -- (L);
+    \draw (D) -- (L);
+    \draw (E) -- (L);
+    \draw[red] (A) -- (H);
+    \draw[red] (B) -- (I);
+    \draw[red] (C) -- (J);
+    \draw[red] (E) -- (L);
+\end{tikzpicture}
+\end{center}
+\end{multicols}
+\noindent
+From matchings to flows:\\
+\begin{center}
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,-1) {B};
+    \node[shape=circle,draw=black] (C) at (0,-2) {C};
+    \node[shape=circle,draw=black] (D) at (0,-3) {D};
+    \node[shape=circle,draw=black] (E) at (0,-4) {E};
+    \node[shape=circle,draw=black] (H) at (4,0) {H};
+    \node[shape=circle,draw=black] (I) at (4,-1) {I};
+    \node[shape=circle,draw=black] (J) at (4,-2) {J};
+    \node[shape=circle,draw=black] (K) at (4,-3) {K};
+    \node[shape=circle,draw=black] (L) at (4,-4) {L};
+    \draw (A) -- (H);
+    \draw (B) -- (H);
+    \draw (B) -- (I);
+    \draw (B) -- (J);
+    \draw (C) -- (J);
+    \draw (C) -- (K);
+    \draw (C) -- (L);
+    \draw (D) -- (L);
+    \draw (E) -- (L);
+    \draw[red] (A) -- (H);
+    \draw[red] (B) -- (I);
+    \draw[red] (C) -- (J);
+    \draw[red] (E) -- (L);
+    \draw[->,red] (A) -- (H) node[midway,above] {1};
+    \draw[->,red] (B) -- (I) node[midway,above] {1};
+    \draw[->,red] (C) -- (J) node[midway,above] {1};
+    \draw[->,red] (E) -- (L) node[midway,above] {1};
+\end{tikzpicture}
+\end{center}
+\noindent
+\begin{center}
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,-1) {B};
+    \node[shape=circle,draw=black] (C) at (0,-2) {C};
+    \node[shape=circle,draw=black] (D) at (0,-3) {D};
+    \node[shape=circle,draw=black] (E) at (0,-4) {E};
+    \node[shape=circle,draw=black] (H) at (4,0) {H};
+    \node[shape=circle,draw=black] (I) at (4,-1) {I};
+    \node[shape=circle,draw=black] (J) at (4,-2) {J};
+    \node[shape=circle,draw=black] (K) at (4,-3) {K};
+    \node[shape=circle,draw=black] (L) at (4,-4) {L};
+    \draw (A) -- (H);
+    \draw (B) -- (H);
+    \draw (B) -- (I);
+    \draw (B) -- (J);
+    \draw (C) -- (J);
+    \draw (C) -- (K);
+    \draw (C) -- (L);
+    \draw (D) -- (L);
+    \draw (E) -- (L);
+    \draw[red] (A) -- (H);
+    \draw[red] (B) -- (I);
+    \draw[red] (C) -- (J);
+    \draw[red] (E) -- (L);
+    \draw[->,red] (A) -- (H) node[midway,above] {1};
+    \draw[->,red] (B) -- (I) node[midway,above] {1};
+    \draw[->,red] (C) -- (J) node[midway,above] {1};
+    \draw[->,red] (E) -- (L) node[midway,above] {1};
+    \draw[->,blue] (A) -- (H) node[midway,above] {1};
+    \draw[->,blue] (B) -- (J) node[midway,above] {1};
+    \draw[->,blue] (C) -- (K) node[midway,above] {1};
+    \draw[->,blue] (E) -- (L) node[midway,above] {1};
+\end{tikzpicture}
+\end{center}
+\noindent
+\textbf{Maximum Flow and Maximum Matching}\\
+The size of the maximum matching is equal to the value of the maximum flow.\\
+The edges of $M$ are the edges that carry flow form $A$ to $B$ in the residual network.\\
+Running time: $O(mn)$\\
+\textbf{Baseball Elimination}
+\begin{itemize}
+    \item Given a set $S$ of teams
+    \item For each team $x$ in $S$, the current number of wins $w_x$
+    \item For teams $x$ and $y$ in $S$, they still have to play $g_{xy}$ games against each other
+    \item Given a designated team $z$
+    \item Can $z$ still win the turnament?
+\end{itemize}
+\textbf{From Baseball Elimination to flows}
+\begin{itemize}
+    \item For each pair of teams $x$ and $y$, create a vertex $v_{xy}$
+    \item For each team $x$, create a vertex $v_x$
+    \item For each pair of teams $x$ and $y$, create an edge $(s, v_{xy})$ with capacity $g_{xy}$
+    \item For each team $x$, create an edge $(v_x, t)$ with capacity $w_z + g_{xz} - w_x$
+    \item For each pair of teams $x$ and $y$, create an edge $(v_{xy}, v_x)$ with infinite capacity
+    \item For each pair of teams $x$ and $y$, create an edge $(v_{xy}, v_y)$ with infinite capacity
+\end{itemize}
+\noindent
+\textbf{Open pit mining}
+\begin{itemize}
+    \item Given a set $S$ of blocks
+    \item For each block $x$ in $S$, the value $v_x$ of the ore in the block
+    \item For each block $x$ in $S$, the cost $c_x$ of mining the block
+    \item For each block $x$ in $S$, the set $N_x$ of blocks that are neighbors of $x$
+    \item Given a designated block $z$
+    \item What is the maximum value of ore that can be mined?
+\end{itemize}
+\textbf{From open pit mining to flows}
+\begin{itemize}
+    \item For each block $x$ in $S$, create a vertex $v_x$
+    \item For each block $x$ in $S$, create an edge $(s, v_x)$ with capacity $v_x$
+    \item For each block $x$ in $S$, create an edge $(v_x, t)$ with capacity $c_x$
+    \item For each block $x$ in $S$, create an edge $(v_x, v_y)$ with infinite capacity for each block $y$ in $N_x$
+\end{itemize}
 
-
-
-
-
+\chapter{NP-Completeness}
 
 
 
