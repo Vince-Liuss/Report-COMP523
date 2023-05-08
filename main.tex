@@ -1670,7 +1670,42 @@ Running time: $O(mn)$\\
 \end{itemize}
 
 \chapter{NP-Completeness}
-
+\section{NP-Completeness}
+\textbf{Polynomial time reduction}
+\begin{itemize}
+    \item Given a problem $A$ to solve
+    \item Reduce solving $A$ to solving $B$
+    \item Assume there is an algorithm $ALG^B$ that solves $B$ at cost $O(1)$
+    \item Construct an algorithm $ALG^A$ that solves $A$, which uses $ALG^B$ as a subroutine
+    \item If $ALG^A$ runs in polynomial time, then this is a polynomial time reduction
+\end{itemize}
+\textbf{How to work with reductions}\\
+Positive: Assume that I want to solve problem $A$ and I know how to solve problem $B$.\\
+\indent I can try come up with a polynomial time reduction $A \leq^p B$, which will give me a polynomial time algorithm for $A$.\\
+Contrapositive: Assume that there is a problem $A$ for which it is unlikely that there is a polynomial time algorithm that solves $A$.\\
+\indent If I come up with a polynomial time reduction $A \leq^p B$, it is also unlikely that there is a polynomial time algorithm that solves $B$.\\
+\indent $B$ is "at least as hard to solve as" $A$, because if I could solve $B$, I could also solve $A$.\\ 
+\textbf{Types of reductions}
+\begin{itemize}
+    \item Turing reduction: $A \leq_T B$
+    \begin{itemize}
+        \item A reduction which solves $A$ using (potentially many) calls to an oracle for $B$
+        \item As known as Cook reduction
+    \end{itemize}
+    \item Many-one reduction: $A \leq_m B$
+    \begin{itemize}
+        \item A reduction which converts instances of $A$ to instances of $B$
+        \item Also known as Karp reduction
+    \end{itemize}
+\end{itemize}
+\textbf{Problem classification}\\
+Problems in $P$:\\
+\indent Searching, sorting, minimum spanning tree, graph traversal, maximum flow, minimum cut, weighted interval scheduling, etc.\\
+Problems in $NP$:\\
+\indent subset sum, knapSack, weighted interval scheduling, Searching, sorting, minimum spanning tree, graph traversal, maximum flow, minimum cut, etc.\\
+\textbf{NP-hardness}\\
+A problem $B$ is NP-hard if for every problem $A$ in $NP$, $A \leq^p B$.\\
+\indent If every problem in $NP$ is polynomial time reducible to $B$, then this captures the fact that $B$ is at least as hard as any problem in $NP$.\\
 
 
 
