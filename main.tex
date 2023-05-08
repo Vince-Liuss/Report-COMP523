@@ -1706,11 +1706,83 @@ Problems in $NP$:\\
 \textbf{NP-hardness}\\
 A problem $B$ is NP-hard if for every problem $A$ in $NP$, $A \leq^p B$.\\
 \indent If every problem in $NP$ is polynomial time reducible to $B$, then this captures the fact that $B$ is at least as hard as any problem in $NP$.\\
+\textbf{3 SAT}
+\begin{itemize}
+    \item A CNF formula with $m$ clauses and $k$ literals.
+    \begin{equation*}
+        \varphi = (x_1 \lor \lnot x_5 \lor x_3) \land ( x_2 \lor x_6 \lor \lnot x_5) \land \dots \land (x_3 \lor x_8 \lor x_{12})
+    \end{equation*}
+    \item each clause has exactly three literals
+    \item Truth assignment: A value in $\{0, 1\}$ for each variable $x_i$
+    \item Satisfying assignment: A truth assignment which makes the formula evaluate to $1$
+    \item Computational problem 3 SAT: Decide if the input formula $\varphi$ has a satisfying assignment.
+\end{itemize}
+\textbf{3 SAT is NP-complete}
+\begin{itemize}
+    \item 3 SAT is in $NP$
+    \begin{itemize}
+        \item Given a truth assignment, we can check in polynomial time if it is satisfying
+    \end{itemize}
+    \item 3 SAT is NP-hard
+    \begin{itemize}
+        \item Given a CNF formula $\varphi$, we can construct a polynomial time reduction to 3 SAT
+    \end{itemize}
+\end{itemize}
+\textbf{Proving NP-completeness}
+\indent Suppose that you are given a problem $A$ and you want to prove that $A$ is NP-complete.\\
+\indent First, prove that $A$ is in $NP$.\\
+\indent \indent Usually by observing that a solution is efficiently verifiable.\\
+\indent Then prove that $A$ is NP-hard.\\
+\indent \indent construct a polynomial time reduction from a known NP-complete problem $P$.\\
 
+\section{NP-completeness of the vertex cover problem}
+\textbf{Vertex cover}
+Definition: A vertex cover $C$ of a graph $G = (V, E)$ is a subset of vertices $C \subseteq V$ such that for every edge $e$ in $E$, at least one of the endpoints of $e$ is in $C$.\\
+Definition: A minimum vertex cover is a vertex cover of smallest possible size.\\
+Input: A graph $G = (V, E)$\\
+Output: A minimum vertex cover\\
+\textbf{Example}
+\begin{center}
+    \begin{tikzpicture}
+        \node[shape=circle,draw=black] (A) at (0, 0) {A};
+        \node[shape=circle,draw=black] (B) at (2, 0) {B};
+        \node[shape=circle,draw=black] (C) at (4, 2) {C};
+        \node[shape=circle,draw=black] (D) at (4, -2) {D};
+        \node[shape=circle,draw=black] (E) at (6, 0) {E};
+        \node[shape=circle,draw=black] (F) at (6, 4) {F};
+        \draw (A) -- (B);
+        \draw (A) -- (C);
+        \draw (A) -- (D);
+        \draw (B) -- (C);
+        \draw (B) -- (D);
+        \draw (C) -- (D);
+        \draw (C) -- (E);
+        \draw (C) -- (F);
+        \draw (D) -- (E);
+        \draw (E) -- (F);
+    \end{tikzpicture}\\
+    the vertex cover $\{A, C, E\}$ is not a minimum vertex cover\\
+    the minimum vertex cover is $\{A, E\}$.
+\end{center}
+\textbf{Vertex cover is NP-hard}: construct a polynomial time reduction from 3 SAT to vertex cover.\\
+\indent Let $\varphi$ be a 3 CNF formula with $m$ clauses and $d$ variables.\\
+\indent Construct in polynomial time an instance $<G, k>$ of vertex cover, with $k = d + 2m$.\\
+\indent \indent if $\varphi$ is satisfiable, then $G$ has a vertex cover of size at most $k$\\
+\indent \indent \indent Let $(y_1, y_2, \dots, y_d)$ in $\{0, 1\}^d$ be a satisfying assignment for $\varphi$\\
+\indent \indent \indent For the nodes on the top: If $y_i = 1$. Include node $x_i$ in the vertex cover $C$, otherwise include node $\lnot x_i$ in $C$.\\
+\indent \indent \indent For the nodes on the bottom: in each triangle, choose a node $x_i$ that has been picked on the top and do not include it in the vertex cover. Include the other two nodes.\\
+\indent \indent if $\varphi$ is not satisfiable, then $G$ has no vertex cover of size at most $k$\\
+\indent \indent \indent Let $C$ be a vertex cover of size $k = d + 2m$ in $G$.\\
+\indent \indent \indent Since it is a vertex cover, it must include at least two out of three nodes in each "clause gadget" at the bottom.\\
+\indent \indent \indent this means that at most $d$ nodes can be picked on the top.\\
+\indent \indent \indent To satisfy the edges at the top, in each "variable gadget", at least one node must be picked.\\
 
-
-
-
+\section{Further reductions in NP}
+\textbf{Form optimization to decision}\\
+Given an optimization problem $P$, introcude a threshold $k$.\\
+The decision version $P_d$ becomes: Given an instance of $P$ and the threshold $k$ as input, is there a solution to $P$ with value at most $k$?\\
+\indent If $P$ solved in polynomial time, then $P_d$ is also solved in polynomial time.\\
+\indent If $P_d$ solved in polynomial time, then $P$ is also solved in polynomial time.\\
 
 
 
