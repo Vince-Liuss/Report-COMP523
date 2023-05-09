@@ -1783,7 +1783,23 @@ Given an optimization problem $P$, introcude a threshold $k$.\\
 The decision version $P_d$ becomes: Given an instance of $P$ and the threshold $k$ as input, is there a solution to $P$ with value at most $k$?\\
 \indent If $P$ solved in polynomial time, then $P_d$ is also solved in polynomial time.\\
 \indent If $P_d$ solved in polynomial time, then $P$ is also solved in polynomial time.\\
-
+\noindent
+\textbf{NP-complete problems}\\
+Independent Set in graph $G$: A set of nodes in the graph, such that there is no edge between any two nodes in the set.\\
+Maximum Independent Set: Given a graph $G$, find an independent set of maximum size.\\
+Maximum Independent Set(desision version): Given a graph $G$ and a threshold $k$, is there an independent set of size at least $k$?\\
+Set Packing: Given a set $U$ and a collection of subsets $S_1, S_2, \dots, S_m$ of $U$ and a number $k$, does there exist a collection of at least $k$ of these subsets that no two of them intersect?\\
+Set Cover: Given a set $U$ and a collection of subsets $S_1, S_2, \dots, S_m$ of $U$ and a number $k$, does there exist a collection of at most $k$ of these sets whose union is $U$?\\
+3-Dimensional Matching: Given three disjoint sets $X, Y, Z$ each of size $n$, and a collection of triples $T \subseteq X \times Y \times Z$, does there exist a set of $n$ triples in $T$, so that each element of $X \cup Y \cup Z$ appears in exactly one of these triples?\\
+K-Colouring of a graph $G$: A function $f: V \rightarrow \{1, 2, \dots, k\}$ so that for every edge $(u, v)$ in $E$, $f(u) \neq f(v)$.\\
+3-Colouring: Given a graph $G$, can we colour the nodes of $G$ using 3 colours so that no two adjacent nodes have the same colour?\\
+Hamiltionian cycle in a directed graph $G$: A cycle in a directed graph that visits every node exactly once.\\
+Hamiltionian path in a directed graph $G$: A path in a directed graph that contains every node exactly once.\\
+Hamiltionian Cycle: Given a directed graph $G$, does $G$ contain a Hamiltionian cycle?\\
+Hamiltionian Path: Given a directed graph $G$, does $G$ contain a Hamiltionian path?\\
+Traveling Salesman: Given a complete graph $G$ with edge weights, and a threshold $k$, is there a tour of $G$ with total weight at most $k$?\\
+\noindent
+A texonomy of NP-complete problems\\
 
 
 
