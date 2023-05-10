@@ -2072,6 +2072,132 @@ Often it is not possible to get that close.\\
 \indent Inapproximability $\alpha$ of a problem $P$:\\
 \indent \indent There is no polynomial time algorithm that achieves an approximation ratio better than $\alpha$.\\
 
+\section{The traveling salesman problem}
+Problem definition:\\
+\indent $n$ cities, $c_{ij}$ is the cost of traveling from city $i$ to city $j$.\\
+\indent $c_{ij} = c_{ji} \geq 0,c_{ii} = 0$\\
+Feasible solution: A tour that visits every city exactly once and returns to the starting city.\\
+Optimal solution: A feasible tour with minimum total cost.\\
+\textbf{Graph interpretation}\\
+Complete graph on $n$ vertices.\\
+\indent $c_{ij}$ is the weight of the edge $(i,j)$.\\
+Tour: Hamiltonian cycle in the graph.\\
+Goal: A Hamiltonian cycle with minimum total weight.\\
+Mtetric TSP problem: The cost satisfy the triangle inequality.\\
+\begin{equation*}
+    c_{ik} \leq c_{ij} + c_{jk}
+\end{equation*}
+\textbf{The Nears Neighbor Algorithm}
+\begin{itemize}
+    \item Start with a greedy step
+    \item Start with an edge $(i,j)$ of minimum weight.
+    \item Create a cycle$(i,j,i)$.
+\end{itemize}
+Generally, Assume that we have already visited a set of cities $S$. We find a city $i \in S$ and a city $j \notin S$ such that the cost of the edge $(i,j)$ is minimum possible. We include $j$ in $S$ and insert it between $i$ and the city that follows $i$ in the cycle.\\
+Consider the tour $(u_1,u_2,\dots,u_n)$ and remove the final that brings us back to $u_1$. We will have a spanning tree. So the cost of the tour is at least the cost of the spanning tree.\\
+\textbf{Lemma}: cost(optimal tour) $\geq$ cost(minimum spanning tree).\\
+We can use Prim Algorithm to find the minimum spanning tree.\\
+Let $F=\{(u_2,v_2),(u_3,v_3),\dots,(u_{n},v_{n})\}$ be the set of edges in the minimum spanning tree.\\
+\begin{equation*}
+    \text{Hence} OPT \geq \sum_l c_{u_l,v_l}
+\end{equation*}
+The cost of the algorithm is at most $2 \sum_l c_{u_l,v_l}$.\\
+The cost of the tour between first two nodes is $2c_{u_1,v_1}$.\\
+When inserting the city $j$, the cost increases by $c_{i,j}+c_{j,k}-c_{i,k} \leq c_{i,j}+c_{i,k}-c_{i,k} = 2c_{i,j}$.\\
+\textbf{A different perspective}
+\begin{itemize}
+    \item Start by finding a minimum spanning tree.
+    \item Duplicate each edge of the tree.
+    \item Do a traversal following the edges of the tree.
+    \item Turn this into a tour by shortcutting.
+\end{itemize}
+
+\indent \textbf{Eulerian Graph}\\
+\indent There is a permutation of the edegs $(i_0,i_1),(i_1,i_2),\dots,(i_{k-1},i_k),(i_k,i_0)$. If this exists, we can make a traversal of the edegs, visiting each edge exactly once.\\
+\indent Property: A graph is Eulerian if and only if it is connected and every vertex has even degree.\\
+Some Facts:\\
+\indent \textbf{Fact 1}: the sum of its degrees is even.\\
+\indent \textbf{Fact 2}: The total number of even-degree nodes is an even number.\\
+\indent \textbf{Fact 3}: The total number of odd-degree nodes is an even number.\\
+\indent \textbf{Fact 4}: The number of odd-degree nodes is even.\\
+Constructing an Eulerian graph:\\
+\indent Start from the minimum spanning tree $T$.\\
+\indent Consider the set of odd-degree nodes $O$.\\
+\indent Find a minimum weight perfect matching of $O$. (This can be done in polynomial time.)\\
+\indent Add the edges of the matching to $T$.\\
+\indent The resulting graph is Eulerian.\\
+Equivalently: The cost of the perfect matching is at most $OPT/2$.\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
