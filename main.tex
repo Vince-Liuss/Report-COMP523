@@ -2373,11 +2373,30 @@ In a bipartite graph, the size of the maximum matching is equal to the size of t
     \item König's proof is constructive: It starts from a maximum matching, and constructs a minimum vertex cover, proving that it is minimum.
     \item Alternative proof based on total unimodularity.
 \end{itemize}
-
-
-
-
-
+So we have:
+\begin{itemize}
+    \item size of the maximum matching = size of the minimum vertex cover
+    \item size of the minimum vertex cover = size of minimum fractional VC.
+    \item size of the maximum fractional matching = size of the minimum fractional VC.
+    \item size of maximum matching = size of minimum VC.
+\end{itemize}
+Solve for VC on bipartite graphs:
+\begin{itemize}
+    \item Pick a vertex $v$ in the graph.
+    \item Remove it to get graph $G-\{v\}$.
+    \item Property: If $v$ is in the minimum vertex cover, $G-\{v\}$ has a minimum vertex cover of size $k^*-1$.
+    \item Check if the graph $G-\{v\}$ has a vertex cover of size at most $k^*-1$.
+    \subitem Yes: Include $v$ in the vertex cover.
+    \subitem No: Do not include $v$ in the vertex cover.
+    \subitem Then move on to the next vertex.
+\end{itemize}
+\textbf{Summing up}\\
+Vertex Cover is strongly NP-hard in general graphs.
+\begin{itemize}
+    \item In fact, hard to approximate better than 1.363.
+    \item There exist 2-approximate polynomial time algorithms for the problem.
+\end{itemize}
+On bipartite graphs, the problem is solvable in polynomial time.
 
 
 
