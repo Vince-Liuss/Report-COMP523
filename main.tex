@@ -2261,13 +2261,61 @@ Terminology: We will say that a node $i$ is "tight" if $\sum_{e=(i,j)} p_e = w_i
     \item We compare the two solutions.
 \end{itemize}
 
-
-
-
-
-
-
-
+\section{Rounding Linear Programs}
+In last section, we designed an algorithm for the vertex cover problem, which used the following LP-relaxation:
+\begin{equation*}
+    \begin{aligned}
+    \text{minimize} \quad & \sum_{i \in V} w_i x_i\\
+    \text{subject to} \quad & x_i + x_j \geq 1 \quad \forall (i,j) \in E\\
+    & 0 \leq x_i \quad \forall i \in V\\
+    & x_i \in \{0,1\} \quad \forall i \in V
+    \end{aligned}
+\end{equation*}
+\textbf{Solving the LP-relaxation}:\\
+\begin{itemize}
+    \item We can solve the LP-relaxation in polynomial time, to find an optimal solution.
+    \item The optimal solution is a "fractional" vertex cover, where variables can take values between 0 and 1.
+    \item Is the value of the "fractional" vertex cover, smaller or larger than the value of the mimimum weight vertex cover?
+\end{itemize}
+We do not know the optimal, so using a lower bound for the optimal.\\
+Now we have a bound:
+\begin{equation*}
+    \text{optimal fractional VC weight} \leq \text{optimal VC weight} \leq \text{algorithm VC weight}
+\end{equation*}
+\textbf{Rounding the LP-relaxation}:\\
+We round the fractional solution to an integral solution.
+\begin{itemize}
+    \item We pick a variable $x_i$ and round it to 0 or 1.
+    \item If we set everything to 0, it is not a vertex cover.
+    \item If we set everything to 1, we "pay" too much.
+    \item We set variable $x_i$ to 1 if $x_i \geq 1/2$ and to 0 otherwise.
+\end{itemize}
+\textbf{Feasibility}:
+Claim: The solution that we obtain is a vertex cover. This is, the round solution is a feasible solution to the ILP.
+Easy Proof: Assume that it is not.
+\begin{itemize}
+    \item Then there is an edge $e=(i,j)$ such that both $x_i$ and $x_j$ are 0.
+    \item This means that in the LP-relaxation, we have that $x_i < 1/2$ and $x_j < 1/2$.
+    \item But then the constraint $x_i + x_j \geq 1$ would be violated, and this would not be a feasible solution to the LP-relaxation.
+\end{itemize}
+\textbf{Approximation Ratio}:
+\begin{itemize}
+    \item Claim: The vertex cover obtained from rounding has weight at most twice that of the minimum weight vertex cover.
+    \item Intuition is easy: We included all the vertices for which the LP-relaxation "paid" at least 1/2, and we rounded them to 1, so we "paid" at most twice the optimal.
+    \item One line proof: Let $x^*$ be the optimal solution to the LP-relaxation, then
+    \begin{equation*}
+        \sum_i w_i x_i^* \geq \sum_{i \in S} w_i x_i^* \geq \frac{1}{2} \sum_{i \in S} w_i = \frac{1}{2} w(S)
+    \end{equation*}
+\end{itemize}
+The LP-relaxation and round algorithm for vertex cover has approximation ratio of 2. We already know that 2 was possible, from the Pricing method algorithm. In this case, the ILP-relaxation and round algorithm seems conceptually simpler. In other cases, rounding the solution will not be straightforward.\\
+\textbf{Limitations of the techniques}\\
+The LP-relaxation and round techniques cannot provide approximation ratios better than the integrality gap of the ILP-LP fomulation.\\
+Caution: The integrality gap is a quantity has to do with the formulation of the ILP-LP, not the problem.
+\begin{itemize}
+    \item An integrality gap of $\alpha$ does not mean that it is not possible to design an algorithm with approximation ratio better than $\alpha$.
+    \item actually, it does not even mean that LP-relaxation and round cannot give you an algorithm with approximation ratio better than $\alpha$.
+    \item It means that with this formulation of the ILP-LP, $\alpha$ is the best approximation ratio that you can get.
+\end{itemize}
 
 
 
