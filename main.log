@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.8)  9 MAY 2023 19:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.8)  9 MAY 2023 22:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -975,7 +975,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 797--801
 
 [16]
 Chapter 4.
-<figures/scheduling.png, id=278, 780.9175pt x 593.21625pt>
+<figures/scheduling.png, id=298, 780.9175pt x 593.21625pt>
 File: figures/scheduling.png Graphic file (type png)
 <use figures/scheduling.png>
 Package pdftex.def Info: figures/scheduling.png  used on input line 833.
@@ -1157,27 +1157,85 @@ Underfull \hbox (badness 10000) in paragraph at lines 1767--1779
  []
 
 [33]
-Underfull \hbox (badness 10000) in paragraph at lines 1781--1803
+Underfull \hbox (badness 10000) in paragraph at lines 1781--1809
 
  []
 
-[34] (./main.aux)
+[34]
+Chapter 8.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1830--1832
+
+ []
+
+[35
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1865--1866
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1871--1876
+
+ []
+
+[36]
+Underfull \hbox (badness 10000) in paragraph at lines 1912--1918
+
+ []
+
+[37]
+Chapter 9.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1971--1977
+
+ []
+
+[38
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1986--1988
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1990--1998
+
+ []
+
+[39]
+Underfull \hbox (badness 10000) in paragraph at lines 2029--2032
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2050--2057
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2064--2074
+
+ []
+
+[40] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 8BE2223EDFB16BE12BEAF6956F3E820E;7341.
+(rerunfilecheck)             Checksum: E6BE05CC4CECF742938AFABDFD131BD2;8056.
  ) 
 Here is how much of TeX's memory you used:
- 23239 strings out of 476025
- 427357 string characters out of 5790018
+ 23432 strings out of 476025
+ 431125 string characters out of 5790018
  1878388 words of memory out of 5000000
- 43151 multiletter control sequences out of 15000+600000
- 539497 words of font info for 87 fonts, out of 8000000 for 9000
+ 43327 multiletter control sequences out of 15000+600000
+ 540424 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,11n,103p,441b,778s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (35 pages, 270542 bytes).
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on main.pdf (41 pages, 296374 bytes).
 PDF statistics:
- 473 PDF objects out of 1000 (max. 8388607)
- 406 compressed objects within 5 object streams
- 124 named destinations out of 1000 (max. 500000)
- 370 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 530 PDF objects out of 1000 (max. 8388607)
+ 455 compressed objects within 5 object streams
+ 138 named destinations out of 1000 (max. 500000)
+ 410 words of extra memory for PDF output out of 10000 (max. 10000000)
 

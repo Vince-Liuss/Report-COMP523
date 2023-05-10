@@ -1800,42 +1800,277 @@ Hamiltionian Path: Given a directed graph $G$, does $G$ contain a Hamiltionian p
 Traveling Salesman: Given a complete graph $G$ with edge weights, and a threshold $k$, is there a tour of $G$ with total weight at most $k$?\\
 \noindent
 A texonomy of NP-complete problems\\
+\indent Packing problems: Independent Set, Set Packing\\
+\indent Covering problems: Vertex Cover, Set Cover\\
+\indent Partitioning problems: 3-Dimensional Matching, Graph Colouring\\
+\indent Sqequcen problems: Hamiltionian Cycle, Hamiltionian Path, Traveling Salesman\\
+\indent Numerical problems: Subset Sum, Knapsack\\
+\indent Constraint satisfaction problems: 3 SAT\\
+
+\chapter{Liner Programming}
+\textbf{Problem}: A company makes two products, $X$ and $Y$. Each product requires time on two machines, $A and B$.
+\begin{itemize}
+    \item Each unit of $X$ requires 50 minutes on machine $A$ and 30 minutes on machine $B$.
+    \item Each unit of $Y$ requires 24 minutes on machine $A$ and 33 minutes on machine $B$.
+    \item At the start of the week, there are 30 units of $X$ and 90 units of $Y$ in stock.
+    \item The available processing time on machine $A$ is 40 hours, and on machine $B$ is 35 hours.
+    \item The demand for $X$ in this week is 75 units, and for $Y$ is 95 units.
+\end{itemize}
+\textbf{Goal}: Maximise the combine sum of units of $X$ and $Y$ in stock at the end of the week.
+\begin{align*}
+    maximise(x+30-75)+(y+90-95)=x+y-50
+\end{align*}
+Base in the Description, we can get the following equations:
+\begin{align*}
+    \text{maximize  } \:& x+y-50\\
+    \text{subject to  } \:& 50x+24y \leq 2400\\
+    & 30x+33y \leq 2100\\
+    & x \leq 45\\
+    & y \leq 5\\
+\end{align*}
+\textbf{Solving the linear program}\\
+\begin{center}
+    \begin{tikzpicture}[scale=0.05]
+        % draw the axis
+        \draw[->] (0,0) -- (100,0) node[right] {$x$};
+        \draw[->] (0,0) -- (0,100) node[above] {$y$};
+        % draw the equations
+        \draw[domain=0:65,smooth,variable=\x,black] plot ({\x},{100-(50/24)*\x});
+        \draw[domain=0:75,smooth,variable=\x,black] plot ({\x},{(2100/33)-(30/33)*\x});
+        \draw[domain=0:100,smooth,variable=\x,black] plot ({\x},{5});
+        \draw[domain=0:100,smooth,variable=\x,black] plot ({45},{\x}); 
+    \end{tikzpicture}
+\end{center}
+
+\section{Linear Programming}
+\begin{align*}
+    \text{maximize  } \:& \sum_{j=1}^n c_jx_j\\
+    \text{subject to  } \:& \sum_{j=1}^n a_{ij}x_j \leq b_i \text{ for } i=1, 2, \dots, m\\
+    & x_j \geq 0 \text{ for } j=1, 2, \dots, n
+\end{align*}
+\textbf{matrix form}
+\begin{align*}
+    \text{maximize  } \:& \mathbf{c}^T\mathbf{x}\\
+    \text{subject to  } \:& \mathbf{Ax} \leq \mathbf{b}\\
+    & \mathbf{x} \geq \mathbf{0}
+\end{align*}
+\noindent
+\textbf{Solving the linear program}
+\begin{itemize}
+    \item To find the optimal solution, it suffices to examine the conrners of the feasible region.
+    \item These are the intersection points of the lines defined by the constraints.
+    \item This is the Simplex method.
+    \item Otehr algorithm for solving LPs: Ellipsoid method, Interior point method.
+\end{itemize}
+\textbf{Integer Linear Programming}\\
+\begin{align*}
+    \text{maximize  } \:& \sum_{j=1}^n c_jx_j\\
+    \text{subject to  } \:& \sum_{j=1}^n a_{ij}x_j \leq b_i \text{ for } i=1, 2, \dots, m\\
+    & x_j \geq 0 \text{ for } j=1, 2, \dots, n\\
+    & x_j \in \mathbb{Z} \text{ for } j=1, 2, \dots, n
+\end{align*}
+\textbf{Solving the integer linear program}\\
+The corners are not necessarily integer solutions. it does not suffices to look at the corners.\\
+WE can exhaustively search all possible integer solutions.\\
+Generally, this is NP-hard.\\
+
+\begin{enumerate}
+    \item Linear Programming can be solved in polynomial time.
+    \item Integer Linear Programming Generally cannot be solved in polynomial time.(unless P=NP)
+\end{enumerate}
+
+\section{Duality}
+\begin{itemize}
+    \item Suppose that we have a linear program, which we call the primal.
+    \item We will construct another linear program, which we call the dual.
+    \item The variables of the primal become the constraints of the dual, and vice versa.
+    \item Maximisation becomes minimisation.
+    \item The two linear programs will have a very important connection.
+\end{itemize}
+\textbf{Primal}
+\begin{align*}
+    \text{maximize  } \:& \sum_{j=1}^n c_jx_j\\
+    \text{subject to  } \:& \sum_{j=1}^n a_{ij}x_j \leq b_i \text{ for } i=1, 2, \dots, m\\
+    & x_j \geq 0 \text{ for } j=1, 2, \dots, n
+\end{align*}
+\textbf{Dual}
+\begin{align*}
+    \text{minimize  } \:& \sum_{i=1}^m b_iy_i\\
+    \text{subject to  } \:& \sum_{i=1}^m a_{ij}y_i \geq c_j \text{ for } j=1, 2, \dots, n\\
+    & y_i \geq 0 \text{ for } i=1, 2, \dots, m
+\end{align*}
+\noindent
+\textbf{Weak Duality}\\
+Let $\mathbf{x}$ be any feasible solution to the primal, and let $\mathbf{y}$ be any feasible solution to the dual. Then
+\begin{align*}
+    value(\mathbf{x}) \leq value(\mathbf{y})
+\end{align*}
+\textbf{Strong Duality}\\
+Let $\mathbf{x}$ be any feasible solution to the primal, and let $\mathbf{y}$ be any feasible solution to the dual. if 
+\begin{align*}
+    value(\mathbf{x}) = value(\mathbf{y})
+\end{align*}
+then $\mathbf{x}$ and $\mathbf{y}$ are optimal solutions to the primal and dual respectively.\\
+\noindent
+\textbf{LP-relaxation}\\
+An LP-relaxation of an integer linear program is a linear program which is identical to the integer linear program, except all the integrality constraints have been removed, or replaced with non-negativity constraints.\\
+Example of Minimum Cut as ILP and LP-relaxation\\
+\begin{align*}
+    \text{minimize  } \:& \sum_{(u,v) \in E} c_{uv}d_{uv}\\
+    \text{subject to  } \:& d_{uv} - z_u + z_v \geq 0 \text{ for each } (u,v) \in E,u \neq s, v \neq t\\
+    & d_{su} +z_u \geq 0 \text{ for each} (s,u) \in E\\
+    & d_{ut} - z_u \geq 0 \text{ for each} (u,t) \in E\\
+    & d_{uv} \geq 0 \text{ for each } (u,v) \in E\\
+    & z_u \in \{0,1\} \text{ for each } u \in V-\{s,t\}\\
+\end{align*}
 
 
 
 
+\chapter{Approximation Algorithms}
+\section{Approximation Algorithms}
+\textbf{Why Approximation Algorithms?}
+\begin{itemize}
+    \item For some problems, there is no known polynomial time algorithm.
+    \item We can design an approximation algorithm
+    \begin{itemize}
+        \item It runs in polynomial time
+        \item Compute a solution that is guaranteed to be close to the optimal solution
+    \end{itemize}
+\end{itemize}
+\textbf{Methods of approximation algorithms}
+\begin{itemize}
+    \item Greedy algorithms
+    \item Linear programming and rounding
+    \item Pricing method
+    \item Dynamic programming on round inputs
+\end{itemize}
+\textbf{Application: Load Balancing}
+\begin{itemize}
+    \item We have a set of $m$ identical machines $M_1, M_2, \dots, M_m$.
+    \item We have a set of $n$ jobs, with job $j$ having processing time $t_j$.
+    \item We want to assign each job to some machine.
+    \item Let $A(i)$ be the set of jobs assigned to machine $i$
+    \item The load of machine $i$ is $T(i) = \sum_{j \in A(i)} t_j$
+    \item The goal is to minimize the makespan,i.e, $T=\max_i T(i)$
+\end{itemize}
+The load balancing problem is NP-hard.\\
+\textbf{Greedy Algorithm}
+\begin{itemize}
+    \item Pick any job
+    \item Assign it to the machine with the smallest load so fraction
+    \item Remove it from the pile of jobs
+\end{itemize}
+\textbf{Arguing about the optimal}
+\begin{itemize}
+    \item we want to prove that $T$ os not far from $T^*$
+    \item We will show that $T$ is not far from something which is samller than $T^*$
+    \item Then it is certainly not far from $T^*$
+    \item Fundamental idea: Bounding the optimal from below (for minimisation problems) and from above (for maximisation problems).
+\end{itemize}
+Consider the total processing time of all jobs.(the sum of all $t_j$).\\
+\indent one of the $m$ machines must be allocated at least $\frac{1}{m}$ of the total work.\\
+\indent we have that $T^* \geq \frac{1}{m} \sum_{j=1}^n t_j$\\
+Every job must be scheduled on some machine.\\
+\indent the makespan is certainly at least the largest processing time $t_j$ of any job.\\
+\indent we have that $T^* \geq \max_j t_j$\\
 
+\noindent
+\textbf{The Proof}\\
+\indent Consider the final job $j$ assigned to machine $M_i$ by the greedy algorithm. Consider the time when this assignment is made.\\
+\indent This was the smallest load among all machines.\\
+\indent Every other machine had load at least $T_i-t_j$ at this time.\\
+\indent Summing up over all machines, we get 
+\begin{align*}
+    \sum_k T_k \geq m(T_i-t_j) \Rightarrow T_i-t_j \leq \frac{1}{m} \sum_k T_k
+\end{align*}
+\indent So we got the first lower bound.\\
+\begin{align*}
+    T^* \geq T_i - t_j (\text{first lower bound})
+\end{align*}
+Consider a job $j$ assigned to machine $M_i$ by the greedy algorithm. Consider the time when this assignment took place.\\
+\indent The load of machine $j$ was $T_i-t_j$.\\
+\indent This was before we added the job.\\
+\indent After we add the job, the load is $T_i-t_j+t_j$.\\
+\indent Obviously, $t_j \leq \max_k t_k \leq T^*$.\\
+\indent Since $T^*$ is the optimal makespan, it must be at least as large as the load of the machine with the largest load.\\
+\indent So we got the second lower bound.\\
+\begin{align*}
+    t_j \leq T^* (\text{second lower bound})
+\end{align*}
+\indent Combining the two lower bounds, we get
+\begin{align*}
+    T_i \leq 2T^* (\text{since j was the final job})
+\end{align*}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\textbf{Approximation Ratio}\\
+Consider a minimization problem $P$ and an objective $obj$.\\
+\indent Here: Load Balancing on identical machines, and makespan.
+\begin{itemize}
+    \item Consider an approximation algorithm $A$.
+    \item Consider an input $x$ to $P$.
+    \item Let $obj(A(x))$ be the value of the objective function on the output of $A$.
+\end{itemize}
+The approximation ratio of $A$ is defined as
+\begin{align*}
+    \max_{x \in \text{all inputs}} \frac{obj(A(x))}{obj(x)}
+\end{align*}
+\begin{itemize}
+    \item In order to prove an upper bound on the approximation ratio, we have to somehow argue about all inputs.
+    \item In order to prove a lower bound on the approximation ratio, we have to argue about a specific input.
+\end{itemize}
+For maximum problems, we define the approximation ratio as
+\begin{align*}
+    \max_x \frac{obj(x)}{obj(A(x))}
+\end{align*}
+For minimization problems, we define the approximation ratio as
+\begin{align*}
+    \max_x \frac{obj(A(x))}{obj(x)}
+\end{align*}
+Convention, to have approximation ratio always $\geq 1$.\\
+A better greedy algorithm for load balancing\\
+\begin{itemize}
+    \item Sort the jobs in decreasing order of processing times.
+    \item Pick a job and according to this order.
+    \item Assign it to the machine with the smallest load so far.
+    \item Remove it from the pile of jobs.
+\end{itemize}
+\begin{algorithm}[H]
+\caption{Greedy Algorithm for Load Balancing}
+\begin{algorithmic}[1]
+\State Sort the jobs in decreasing order of processing times.
+\State $T \gets 0$
+\For{$j=1$ to $n$}
+\State Assign job $j$ to the machine with the smallest load so far.
+\State $T \gets \max(T,T(i))$
+\EndFor
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
+\noindent
+Consider a job $j$ that was assigned to machine $M_i$ by the greedy algorithm. Consider the time when this assignment took place.\\
+\indent The load of machine $j$ was $T_i-t_j$.\\
+\indent This was before we added the job.\\
+\indent After we add the final job, the load is $T_i-t_j+t_j$.\\
+\indent we established that $t_j \leq t_{m+1} \leq \frac{1}{2} T^*$.\\
+\indent Now we have the third lower bound.\\
+\begin{align*}
+    t_j \leq \frac{1}{2} T^* (\text{third lower bound})
+\end{align*}
+\indent Combining the three lower bounds, we get
+\begin{align*}
+    T_i \leq \frac{3}{2} T^* \\
+    \Rightarrow T \leq \frac{3}{2} T^*
+\end{align*}
+The approximation ratio of the greedy algorithm actually is $\frac{4}{3}$ with a better analysis.\\
+For the loading balancing problem on identical machines, there is a Polynomial time approximation scheme (PTAS).\\
+\indent An algorithm which, given an input and a parameter $\epsilon$, runs in polynomial time and produces an outcome which is $1+\epsilon$ far from the optimal.\\
+\noindent
+\textbf{Inapproximability}\\
+A PTAS (or an FPTAS, more on that later) is the best approximation we can hope for, for an NP-hard problem.\\
+Often it is not possible to get that close.\\
+\indent Inapproximability $\alpha$ of a problem $P$:\\
+\indent \indent There is no polynomial time algorithm that achieves an approximation ratio better than $\alpha$.\\
 
 
 
