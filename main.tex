@@ -2128,15 +2128,138 @@ Constructing an Eulerian graph:\\
 \indent The resulting graph is Eulerian.\\
 Equivalently: The cost of the perfect matching is at most $OPT/2$.\\
 
+\textbf{Bunding the cost of the perfect matching}\\
+\indent Claim: There is partial tour containing the cities in $O$ that has cost at most $OPT$.\\
+\indent \indent Consider the optimal tour.(on the whole graph)\\
+\indent \indent Consider a part $(i,u_1,u_2,\dots,u_l,j)$ of the tour where the cities $u_1,u_2,\dots,u_l$ are in $O$.\\
+\indent \indent "Shortcut" from $i$ to $j$ directly, without an increase in cost.\\
+\indent The cheapest of those two has cost at most $OPT/2$.\\
+\textbf{The approximation landscape of TSP}\\
+\indent The $\frac{3}{2}$-approximation algorithm is due to Christofides (1976).\\
+\indent Inapproximability: 1.0045.\\
 
-
-
-
-
-
-
-
-
+\section{Primal-Dual Method}
+Design a polynomial time apporximation algorithm for the weighted vertex cover problem.\\
+\textbf{The Pricing Method}\\
+\indent Consider a vertex cover $S$.\\
+\indent Every vertex $i$ has a cost, which is equal to $w_i$.\\
+\indent If $i \in S$, then the edges that "use it" have to pay for the cost.\\
+\indent Each edge $e$ in the graph pays a price $p_e$.\\
+Given a vertex cover $i$, we never ask the edges to pay more than the cost of $i$.\\
+\begin{equation*}
+    \sum_{e \in E} p_e \leq w_i
+\end{equation*}
+\textbf{Lemma}: Let $S$ be any vertex cover and let $p_e$ be any non-negative fair prices. Then ,it holds that:\\
+\begin{equation*}
+    \sum_{e \in E} p_e \leq w(S)
+\end{equation*}
+\textbf{Proof of Lemma}:\\
+\begin{enumerate}
+    \item By fairness, we have that: $\sum_{e=(i,j)} p_e \leq w_i$
+    \item Adding up over all nodes, we have 
+    \begin{equation*}
+        \sum_{i \in S} \sum_{e=(i,j)} p_e \leq \sum_{i \in S} w_i = w(S)
+    \end{equation*}
+    \item Since $S$ is a vertex cover, each edge contributes at least one term $p_e$ to expression.
+    \item From this, we get that
+    \begin{equation*}
+        \sum_{e \in E} p_e \leq \sum_{i \in S} \sum_{e=(i,j)} p_e
+    \end{equation*}
+\end{enumerate}
+Terminology: We will say that a node $i$ is "tight" if $\sum_{e=(i,j)} p_e = w_i$.\\
+\begin{algorithm}[H]
+\caption{Vertex-Cover-Approximation(G,w)}
+\begin{algorithmic}[1]
+\State $p_e \gets 0$ for all $e \in E$
+\While{there is an edge $e=(i,j)$ such that neither $i$ nor $j$ is tight}
+    \State $p_e \gets \frac{w_i+w_j}{2}$
+\EndWhile
+\State $S \gets \{i: i \text{ is tight}\}$
+\State \Return $S$
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{second lemma}: The set $S$ and the prices $p$ returned by the Vertex-Cover-Approximation algorithm satisfy: 
+\begin{equation*}
+    w(S) \leq 2 \sum_{e \in E} p_e
+\end{equation*}
+\textbf{Proof of second lemma}:\\
+\begin{enumerate}
+    \item Consider a node $i$ in $S$.
+    \begin{itemize}
+        \item This means that $i$ is tight.
+        \item This means that $\sum_{e=(i,j)} p_e = w_i$.
+    \end{itemize}
+    \item Summing up over all nodes in $S$, we get that
+    \begin{equation*}
+        w(S)=\sum_{i \in S} w_i = \sum_{i \in S} \sum_{e=(i,j)} p_e
+    \end{equation*}
+    \item An edge $e=(i,j)$ can be included in the sum at most twice.
+    \item From this, we get that
+    \begin{equation*}
+        w(S)=\sum_{i \in S} \sum_{e=(i,j)} p_e \leq 2 \sum_{e \in E} p_e
+    \end{equation*}
+\end{enumerate}
+\textbf{Correctness}:
+\begin{enumerate}
+    \item First,$S$ is a vertex cover.
+    \item Suppose that it is not.
+    \item Then there is an edge $e=(i,j)$ that is not covered by $S$.
+    \item This means that neither $i$ nor $j$ is tight.
+    \item The algorithm did not terminate, because of "while there is an edge $e=(i,j)$ such that neither $i$ nor $j$ is tight".
+\end{enumerate}
+\textbf{Approximation Ratio}:
+\begin{itemize}
+    \item Let $S^*$ be the mimimum weight vertex cover.
+    \item Recall that $S$ is the vertex cover returned by the algorithm.
+    \item we have:
+    \begin{equation*}
+        \sum_{e \in E} p_e \leq w(S^*) \text{                   and         }
+        w(S) \leq 2 \sum_{e \in E} p_e
+    \end{equation*}
+    \item Combining the two, we get that $w(S) \leq 2w(S^*)$.
+\end{itemize}
+\textbf{Vertex Cover as an ILP}:\\
+\begin{equation*}
+    \begin{aligned}
+    \text{minimize} \quad & \sum_{i \in V} w_i x_i\\
+    \text{subject to} \quad & x_i + x_j \geq 1 \quad \forall (i,j) \in E\\
+    & x_i \in \{0,1\} \quad \forall i \in V\\
+    &x_i \geq 0 \quad \forall i \in V
+    \end{aligned}
+\end{equation*}
+\textbf{Vertex Cover LP-relaxation}:\\
+\begin{equation*}
+    \begin{aligned}
+    \text{minimize} \quad & \sum_{i \in V} w_i x_i\\
+    \text{subject to} \quad & x_i + x_j \geq 1 \quad \forall (i,j) \in E\\
+    & 0 \leq x_i \quad \forall i \in V
+    \end{aligned}
+\end{equation*}
+\textbf{The Dual}
+\begin{equation*}
+    \begin{aligned}
+    \text{maximize} \quad & \sum_{(i,j) \in E} y_{ij}\\
+    \text{subject to} \quad & \sum_{(i,j) \in E} y_{ij} \leq w_i \quad \forall i \in V\\
+    & y_{ij} \geq 0 \quad \forall (i,j) \in E
+    \end{aligned}\\
+    \begin{aligned}
+    \text{maximize} \quad & \sum_{e \in E} p_e\\
+    \text{subject to} \quad & \sum_{e=(i,j)} p_e \leq w_i \quad \forall i \in V\\
+    & p_e \geq 0 \quad \forall e \in E
+    \end{aligned}
+\end{equation*}
+\textbf{Primal-dual method}:\\
+\begin{itemize}
+    \item We start with an infeasible integral solution $x$ to the primal and a feasible fractional solution $y$ to the dual.
+    \item We increase the value of some $y_j$ until some constraint becomes tight.
+    \begin{itemize}
+        \item We obtain a better feasible fractional solution $y$ to the dual.
+        \item We increase the corresending variable $x_i$ of the primal to obtain a still feasible integral solution $x$ to the primal, which however violates fewer constraints.
+    \end{itemize}
+    \item We end up  with a feasible integral solution $x$ to the primal and a feasible fractional solution $y$ to the dual.
+    \item We compare the two solutions.
+\end{itemize}
 
 
 
