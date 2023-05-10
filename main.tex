@@ -2325,9 +2325,54 @@ Caution: The integrality gap is a quantity has to do with the formulation of the
     \item \textbf{Known fact 2}: It is impossible to design an algorithm with approximation ratio better than 2, unless Unique Games is an NP hard problem.
     \item Both facts are quite involved to prove.
 \end{itemize}
-
-
-
+\textbf{Easier Inapproximability}\\
+Definition: A problem $P$ is strongly NP-hard, when it has a polynomial time reduction from a strongly NP-hard problem.\\
+For a strongly NP-hard problem
+\begin{itemize}
+    \item There is no Fully Polynomial Time Approximation Scheme (FPTAS).
+    \item There is no pseudopolynomial time algorithm that solves it exactly.
+    \subitem Equivalently, if it remains NP-complete even when all of its number parameters are bounded by a polynomial in the length of the input.
+\end{itemize}
+\textbf{VC on bipartite graphs}\\
+Vertex Cover as an ILP:
+\begin{equation*}
+    \begin{aligned}
+    \text{minimize} \quad & \sum_{i \in V} x_i\\
+    \text{subject to} \quad & x_i + x_j \geq 1 \quad \forall (i,j) \in E\\
+    & x_i \in \{0,1\} \quad \forall i \in V \\
+    & x \geq 0 \quad \forall i \in V
+    \end{aligned}
+\end{equation*}
+Vertex Cover as an LP-relaxation:
+\begin{equation*}
+    \begin{aligned}
+    \text{minimize} \quad & \sum_{i \in V} x_i\\
+    \text{subject to} \quad & x_i + x_j \geq 1 \quad \forall (i,j) \in E\\
+    & x \geq 0 \quad \forall i \in V
+    \end{aligned}
+\end{equation*}
+The dual of the LP-relaxation:
+\begin{equation*}
+    \begin{aligned}
+    \text{maximize} \quad & \sum_{e \in E} y_e\\
+    \text{subject to} \quad & y_e \leq 1 \quad \forall e \in E\\
+    & y_e \geq 0 \quad \forall e \in E
+    \end{aligned}
+\end{equation*}
+The ILP corresponding to the dual:
+\begin{equation*}
+    \begin{aligned}
+    \text{maximize} \quad & \sum_{e \in E} y_e\\
+    \text{subject to} \quad & \sum_{e=\{i,j\} \in E} y_e \leq 1 \quad \forall i \in V\\
+    & y_e \in \{0,1\} \quad \forall e \in E
+    \end{aligned}
+\end{equation*}
+\textbf{König's Theorem}\\
+In a bipartite graph, the size of the maximum matching is equal to the size of the minimum vertex cover.
+\begin{itemize}
+    \item König's proof is constructive: It starts from a maximum matching, and constructs a minimum vertex cover, proving that it is minimum.
+    \item Alternative proof based on total unimodularity.
+\end{itemize}
 
 
 
