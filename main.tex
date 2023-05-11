@@ -2399,29 +2399,154 @@ Vertex Cover is strongly NP-hard in general graphs.
 On bipartite graphs, the problem is solvable in polynomial time.
 
 
+\section{Dynamic Programming on Rounded Inputs}
+\textbf{The 0/1-Knapsack Problem}\\
+Given a set of $n$ items $\{1,2,\dots,n\}$. Each item $i$ has a non-negative value $v_i$ and a non-negative weight $w_i$. We are given a bound $W$ on the total weight.\\
+Goal: Select a subset of $S$ of items that $\sum_{i \in S} w_i \leq W$ and $\sum_{i \in S} v_i$ is maximized.\\
+Dynamic Programming algorithm for 0/1-Knapsack:
+\begin{algorithm}[H]
+\caption{SubsetSum}
+\begin{algorithmic}[1]
+    \State $M=[0\dot n,0\dot W]$
+    \State $M[0,0] \gets 0$
+    \For{$i=1,\dots,n$}
+        \For{$w=0,\dots,W$}
+            \If{$w_i \leq w$}
+                \State $M[i,w] \gets \max\{M[i-1,w], M[i-1,w-w_i]+v_i\}$
+            \Else
+                \State $M[i,w] \gets M[i-1,w]$
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return $M[n,W]$
+\end{algorithmic}
+\end{algorithm}
+\noindent
+The dynamic programming algorithm for 0/1 knapsack solves knapsack optimally in time polynomial in $n$ and $W$.
+\begin{algorithm}[H]
+\caption{Knapsack($n,W$)}
+\begin{algorithmic}[1]
+    \State $M=[0\dot n,0\dot W]$
+    \State $M[0,0] \gets 0$
+    \For{$i=1,\dots,n$}
+        \For{$w=0,\dots,W$}
+            \If{$w_i \leq w$}
+                \State $M[i,w] = M[i-1,w]$
+            \Else
+                \State $M[i,w] = \max\{M[i-1,w], M[i-1,w-w_i]+v_i\}$
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return $M[n,W]$
+\end{algorithmic}
+\end{algorithm}
+\noindent
+Another pseudopolynomial time algorithm for 0/1-Knapsack
+\begin{algorithm}[H]
+\caption{Knapsack($n,W$)}
+\begin{algorithmic}[1]
+    \State $M=[0\dots n,0\dots V]$
+    \State $M[i,0] \gets 0 \quad \forall i$
+    \For {$i=1,\dots,n$}
+        \State $S(i)=\sum_{j=1}^i v_j$
+    \EndFor
+    \For {$v=1,\dots,V$}
+        \If {$v > S(n)$}
+            \State $M[i,v]=w_i+M[i-1,v-v_i]$
+        \Else
+            \State $M[i,v]=\min\{w_i+M[i-1,v-v_i],M[i-1,v]\}$
+        \EndIf
+    \EndFor
+    \State \Return $\max\{v \mid M[n,v] \leq W\}$
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Intuition}\\
+We will create subproblems based on the values, not the weights.\\
+Each subproblem will be defined by an index $i$ and target value $v$.\\
+\indent $M[i,v]$ is the smallest knapSack weight $W$ such that it is possible to obtain a solution using a subset of items $\{1,\dots,i\}$ with total value at least $v$.\\
+We have subproblems at most $(n^2v^*)$, where $v^*$ is the maximum value of any item.\\
+\textbf{Information about knapSack}\\
+A pseudo-polynomial time algorithm for solving the problem exactly(actually, a couple of those).\\
+A polynomial time greedy approximation algorithm with approximation ratio $2$.\\
+\textbf{Rounding the values}\\
+Use a rounding parameter $b$.\\
+For each item $i$, let $\tilde{v}_i = \lceil \frac{v_i}{b}*b \rceil$.\\
+\indent It holds that for each item $i$, $v_i \leq \tilde{v}_i \leq v_i + b$.\\
+\indent let $\hat{v}_i = \frac{\tilde{v}_i}{b}= \lceil \frac{v_i}{b} \rceil$.\\
+We divide all the values by $b$ and round up.\\
+\textbf{The algorithm}\\
+knapsack-approx($\mathcal{E}$)
+Set $b=\frac{\epsilon}{2n}\max_i v_i$\\
+Run the DP algorithm for knapsack on values $\hat{v}_i$.\\
+Return the set $S$ of items founds.\\
+\textbf{Feasibility}\\
+The set $S$ is a feasible solution to the knapsack, we didn't mess up the weights.\\
+\textbf{Running time}\\
+The DP algorithm runs in time $O(n^2v^*)$.\\
+Recall:$v^*=\max_i v_i$.\\
+So here, it runs in time polynomial in $n$ and $\max_i v_i$.\\
+It holds that: $\arg\max_i v_i = \arg\max_i \hat{v}_i$.\\
+So we have :$\max_i \hat{v}_i = \hat{v}_j=\lceil \frac{v_j}{b} \rceil =O(n/\epsilon)$.\\
+The overall running time is $O(n^3/\epsilon)$.\\
+This is polynomial in input parameters and $\frac{1}{\epsilon}$.\\
+\textbf{Approximation ratio}\\
+Let $S^*$ be any feasible solution to the knapsack problem.\\
+We know that $\sum_{i \in S^*} v_i \leq \sum_{i \in S^*} \hat{v}_i$.\\
+We have the following:\\
+\begin{equation*}
+    \sum_{i \in S^*} v_i \leq \sum_{i \in S^*} \tilde{v}_i \leq \sum_{i \in S} \tilde{v}_i \leq \sum_{i \in S} (v_i + b) \leq nb+\sum_{i \in S} v_i
+\end{equation*}
+Recall: $b=(\frac{\epsilon}{2n})\max_i v_i$.\\
+Let $v_j$ be the largest value. we have that $v_j=\frac{2nb}{\epsilon}$.\\
+We also have that $v_j=\tilde{v}_j$.\\
+Assumption: Each item fits in the knapsack.\\
+This implies that
+\begin{equation*}
+    \sum_{i \in S} \tilde{v}_i \geq \tilde{v}_j = v_j = \frac{2nb}{\epsilon}
+\end{equation*}
+Finally, from the inequalities of the previous slide, we have that
+\begin{equation*}
+    \sum_{i \in S^*} v_i \leq nb+\sum_{i \in S} v_i \leq nb+(2\epsilon^{-1}-1)nb=(2\epsilon^{-1})nb
+\end{equation*}
+From this, for $\epsilon \geq 1$, we have that
+\begin{equation*}
+    nb \leq \epsilon \sum_{i \in S} v_i
+\end{equation*}
+Back to the inequalities:
+\begin{equation*}
+    \sum_{i \in S^*} v_i \leq \sum_{i \in S^*} \tilde{v}_i \leq \sum_{i \in S} \tilde{v}_i \leq \sum_{i \in S} (v_i + b) \leq nb+\sum_{i \in S} v_i \leq (1+\epsilon)\sum_{i \in S} v_i
+\end{equation*}
+\textbf{PTAS(Polynomial Time Approximation Scheme)}: An approximation algorithm which, given an $\epsilon$, runs in time polynomial in the input parameters and has approximation ratio $1+\epsilon$.\\
+\textbf{FPTAS(Fully Polynomial Time Approximation Scheme)}: An approximation algorithm which, given an $\epsilon$, runs in time polynomial in the input parameters and $\frac{1}{\epsilon}$ and has approximation ratio $1+\epsilon$.\\
+A PTAS for knapsack.\\
+Consider all possible subsets of items with size at most $k$.
+\begin{itemize}
+    \item There are $O(kn^k)$ of those.
+    \item For each one of those subsets, put those items in the knapsack, and use the greedy algorithm to fill the rest of the knapsack.
+    \item One can prove that this solution is a $1+1/k$ approximation in time $O(kn^{k+1})$.
+    \item We can pick $\epsilon=1/k$, and we have a $1+\epsilon$ approximation in time $O((1/\epsilon)n^{1/\epsilon})$.
+    \item This is polynomial in $n$ but not in $1/\epsilon$.
+\end{itemize}
+\textbf{Inapproximability}\\
+Definition: A problem $P$ is strongly NP-hard, when it has a polynomial time reduction from a strongly NP-hard problem.\\
+For a strongly NP-hard problem $P$
+\begin{itemize}
+    \item There is no Fully Polynomial Time Approximation Scheme(FPTAS)
+    \item There is no pseudo-polynomial time algorithm that solves $P$ exactly.
+    \subitem Equivalently, if it remains NP-complete even when all of its numerical parameters are bounded by a polynomial in the length of the input.
+\end{itemize}
+
+\section{Summary}
+Different techniques(greedy, pricing method aka primal-dual, LP-relaxation and rounding, DP on rounded input, brute-force and greedy, dual fitting, etc.)\\
+Limitations of algorithms(tight instances)\\
+Limitations of techniques(integrality gap)\\
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\chapter{Randomised Algorithms}
+\section{Probability Recap}
+\textbf{Finite Probability Space}\\
+Sample space $\Omega$, Event $E$, Probability measure $Pr$, sample $i$, $Pr[E]=\sum_{i \in E} Pr(i)$.\\
 
 
 
