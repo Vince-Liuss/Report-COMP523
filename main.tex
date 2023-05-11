@@ -2561,6 +2561,12 @@ All values possible for coordinates 3 to $n$, all values possible for coordinate
 \begin{equation*}
     Pr[E]=\sum_{i \in E} Pr(i)=\frac{1}{2^{kn}} \cdot 2^{k(n-1)}=\frac{1}{2^k}
 \end{equation*}
+For 1000 processes, the set of identifiers is the set of all 32-bit strings.\\
+The probability of failure is 
+\begin{equation*}
+    Pr[F] \leq \sum_{i,j} Pr[E_{i,j}]=\begin{pmatrix} 1000 \\ 2 \end{pmatrix} \frac{1}{2^{32}} \leq 0.000125
+\end{equation*}
+The probability of success is at least $1-0.000125=0.999875$.\\
 \textbf{conditional probability}\\
 Given that event $F$ has occurred, what is the probability that event $E$ occurs?\\
 \begin{equation*}
@@ -2606,12 +2612,60 @@ Suppose that $F$ is the event the algorithm fails:
     Pr[F] \leq Pr[\bigcup^n_{i=1} E_i] \leq \sum^n_{i=1} Pr[E_i]
 \end{equation*}
 If we can prove that the sum of probabilities of these events is small, then we can prove that our algorithm with high probability produces the correct output.\\
-
-
-
-
-
-
+\textbf{Random Variables and Expectation}\\
+\textbf{Random Variable}: (Informally) A variable $X$ whose values depend on outcomes of a random experiment.\\
+$Pr[X=j]$: The probability that $X$ takes the value $j$.\\
+Expectqation of $X$:
+\begin{equation*}
+    E[X]=\sum_{j=1}^n j \cdot Pr[X=j]
+\end{equation*}
+Example: Assume that $X$ takes a value in $\{1,2,\dot,n\}$ with probability $\frac{1}{n}$ each.\\
+\begin{equation*}
+    E[X]=\sum_{j=1}^n j \cdot Pr[X=j]=\sum_{j=1}^n j \cdot \frac{1}{n}=\frac{1}{n} \sum_{j=1}^n j=\frac{1}{n} \cdot \frac{n(n+1)}{2}=\frac{n+1}{2}
+\end{equation*}
+\textbf{Waiting for the first success}\\
+We flip a biased coin, where $Pr[H]=p$ and $Pr[T]=1-p$.\\
+We flip the coin until we get a head.\\
+Let $X$ be the random variable of the number of flips.\\
+Suppose that we get "heads" on the $j$-th flip.\\
+We have $Pr[X=j]=p \cdot (1-p)^{j-1}$.\\
+The expection then becomes:
+\begin{equation*}
+    E[X]=\sum_{j=1}^{\infty} j \cdot Pr[X=j]=\sum_{j=1}^{\infty} j \cdot p \cdot (1-p)^{j-1}=\frac{1}{1-p} \sum_{j=1}^{\infty} j \cdot (1-p)^j=\frac{1}{1-p} \cdot \frac{(1-p)}{p^2}=\frac{1}{p}
+\end{equation*}
+\textbf{Linearity of Expectation}\\
+Let $X$ and $Y$ be two random variables defined on the same probability space.\\
+Let $X+Y$ be the random variable equal to $X(\omega)+Y(\omega)$ on a point $\omega$ of the sample space.\\
+It holds that: $E[X+Y]=E[X]+E[Y]$.\\
+Generally:
+\begin{equation*}
+    E[X_1+X_2+\dots+X_n]=\sum_{i=1}^n E[X_i]
+\end{equation*}
+\textbf{Guessing a card}\\
+We have a deck of $n$ cards. We draw a card, and before we see it, we have to guess what it is.\\
+\indent We pick one of the cards uniformly at random from the whole deck. Put the card back if we get it wrong.\\
+Let $X$ be the random variable denoting the number of correct guesses.\\
+Let $X_i$ is 1 if the $i$-th guess is correct, and 0 otherwise.\\
+Obviously $X=X_1+X_2+\dots+X_n$.\\
+We have $E[X_i]=0 \cdot Pr[X_i=0]+1 \cdot Pr[X_i=1]=\frac{1}{n}$.\\
+By linearity of expectation, we have:
+\begin{equation*}
+    E[X]=E[X_1+X_2+\dots+X_n]=\sum_{i=1}^n E[X_i]=\sum_{i=1}^n \frac{1}{n}=1
+\end{equation*}
+For guessing a card without replacement:\\
+To help us compute $X$, we define a random variable $X_i$.\\
+$X_i$ is 1 if the $i$-th guess is correct, and 0 otherwise.\\
+Obviously $X=X_1+X_2+\dots+X_n$.\\
+We have $E[X_i]=0 \cdot Pr[X_i=0]+1 \cdot Pr[X_i=1]=\frac{1}{n-i+1}$.\\
+By linearity of expectation, we have:
+\begin{align*}
+    E[X]&=E[X_1+X_2+\dots+X_n]\\
+    &=\sum_{i=1}^n E[X_i]\\
+    &=\sum_{i=1}^n \frac{1}{n-i+1}\\
+    &=\sum_{i=1}^n \frac{1}{i}\\
+    &=H(n)\\
+    H(n)&=\Theta(\log n)
+\end{align*}
 
 
 
