@@ -2547,16 +2547,65 @@ Limitations of techniques(integrality gap)\\
 \section{Probability Recap}
 \textbf{Finite Probability Space}\\
 Sample space $\Omega$, Event $E$, Probability measure $Pr$, sample $i$, $Pr[E]=\sum_{i \in E} Pr(i)$.\\
-
-
-
-
-
-
-
-
-
-
+\textbf{Identifier Selection}\\
+\begin{itemize}
+    \item There are $n$ processing in a distributed system.
+    \item The set of identifiers is the set of all k-bit strings.
+    \item Each process chooses an identifier uniformly at random.
+    \item What is the probability that processes 1 and 2 choose the same identifier?
+\end{itemize}
+For $kn$-bit identifiers, the possible choices are $2^{kn}$, possible points are $2^{kn}$, and same probability for all. All possible output with probability $\frac{1}{2^{kn}}$.\\
+What is the probability that processes 1 and 2 choose the same identifier?\\
+The event $E$ consists of all the points for which the first two coordinates (black and red) are the same.\\
+All values possible for coordinates 3 to $n$, all values possible for coordinate 2 (red) and then coordinate 1 is fixed (black).\\
+\begin{equation*}
+    Pr[E]=\sum_{i \in E} Pr(i)=\frac{1}{2^{kn}} \cdot 2^{k(n-1)}=\frac{1}{2^k}
+\end{equation*}
+\textbf{conditional probability}\\
+Given that event $F$ has occurred, what is the probability that event $E$ occurs?\\
+\begin{equation*}
+    Pr[E|F]=\frac{Pr[E \cap F]}{Pr[F]}
+\end{equation*}
+\begin{align*}
+    Pr[E]=\sum_{i \in E} Pr(i)\\
+    f \text{or any sets} F_j \text{where }E \subseteq \cup_{j=1}^k F_j\\
+\end{align*}
+\textbf{Birthday Problem}\\
+The probability that there do not exist any two people that share a birthday is equal to :
+\begin{equation*}
+    \frac{1 \times (365-1) \times (365-2) \times \dots \times (365-n+1)}{365^n}
+\end{equation*}
+For example if there are 25 people, then this is:
+\begin{equation*}
+    \frac{1 \times 364 \times 363 \times \dots \times 341}{365^{25}} \approx 0.431
+\end{equation*}
+The probability that there exists at least one pair of people that share a birthday is equal to: $1-\frac{1 \times 364 \times 363 \times \dots \times 341}{365^{25}} \approx 0.569$\\
+\textbf{Independent Events}\\
+Two events are independent, if Information about the outcome of one of them does not affect our estimate of the likelihood of the other.\\
+Formally: $Pr[E|F]=Pr[E]$ and $Pr[F|E]=Pr[F]$.\\
+This implies:
+\begin{equation*}
+    \frac{Pr[E \cap F]}{Pr[F]}=Pr[E] \Rightarrow Pr[E \cap F]=Pr[E] \cdot Pr[F]
+\end{equation*}
+In other words, the probability that two independent events happen is the product of the probabilities that each one of them happens.\\
+Generalising:
+\begin{equation*}
+    Pr[\bigcap_{i\in I} E_i]=\prod_{i \in I} Pr[E_i]
+\end{equation*}
+\noindent
+\textbf{The Union Bound}\\
+The probability that $A \text{ or } B \text{ or } C$ happens is at most the sum of the probabilities that each one of them happens.\\
+\begin{equation*}
+    Pr[\bigcup^n_{i=1} E_i] \leq \sum^n_{i=1} Pr[E_i]
+\end{equation*}
+Suppose that we design an algorithm which will produce the correct output with probability.\\
+We first formulate a set of "bad" events $E_1, E_2, \dots, E_n$, which will force our algorithm to produce the wrong output.\\
+If none of these events happen, then our algorithm will produce the correct output.\\
+Suppose that $F$ is the event the algorithm fails:
+\begin{equation*}
+    Pr[F] \leq Pr[\bigcup^n_{i=1} E_i] \leq \sum^n_{i=1} Pr[E_i]
+\end{equation*}
+If we can prove that the sum of probabilities of these events is small, then we can prove that our algorithm with high probability produces the correct output.\\
 
 
 
