@@ -2667,6 +2667,113 @@ By linearity of expectation, we have:
     H(n)&=\Theta(\log n)
 \end{align*}
 
+\section{Randomised Global Min Cut}
+\textbf{Minimum Cut}\\
+A cut $C$ is a partition of the nodes of $G$ into two sets $S$ and $T$, such that $s \in S$ and $t \in T$.\\
+The capacity $c(S,T)$ of the cut $C$ is the sum of the capacities of all edges "out of $S$".\\
+These are the edges $(u,v)$ such that $u \in S$ and $v \in T$.\\
+\textbf{Global Minimum Cut}\\
+Given an undirected graph $G=(V,E)$. A cut of $G$ is a partition of the nodes of the graph into two sets $A$ and $B$. The size of a cut $(A,B)$ is the number of edges with one endpoint in $A$ and the other in $B$. A global minimum cut is a cut of minimum size.\\
+\textbf{Solving GMC}\\
+Theorem: There is a polynomial time algorithm for finding a global minimum cut in an undirected graph $G$.\\
+Idea: Trun the graph $G$ into a flow network, and find a minimum $s-t$ cut.\\
+Replace every undirected edges with two directed edges, one in the forward direction and one in the backward direction. Set the capacity of each edge to 1.\\
+Pick two arbitrary nodes $s,t$ in $V$, and find the minimum $s-t$ cut.\\
+\noindent
+Based on the solving of GMC, a global minimum cut is a cut of minimum size.\\
+Use a randomised algorithm to solve the problem. The algorithm will be faster and simpler. It will produce the correct answer with high probability.\\
+\textbf{The Contraction Algorithm}\\
+Idea:
+\begin{itemize}
+    \item Choose an edge of the graph uniformly at random.
+    \item Contract the edge.
+    \subitem Merge its endpoints $(u,v)$ into a supernode $w=\{u,v\}$.
+    \subitem Any edge $(u,x)$ is removed.
+    \subitem Any edge $(u,a)$ or $(v,a)$ is replaced by $(w,a)$.
+    \item When we are left with only two supernodes $w_1$ and $w_2$, the corresponding sets of nodes are $A$ and $B$.
+\end{itemize}
+\begin{algorithm}[H]
+\caption{Contraction Algorithm}
+\begin{algorithmic}[1]
+\Procedure{Contraction}{$G$}
+\For {each $v \in V$}
+    \State $S(v) \gets \{v\}$
+\EndFor
+\If {$G$ has two nodes $w_1$ and $w_2$}
+    \State $A \gets S(w_1)$
+    \State $B \gets S(w_2)$
+    \State \textbf{return} $(A,B)$
+\Else
+    \State choose an edge $(u,v)$ uniformly at random
+    \State Let $G'$ be the graph resulting from contracting $e$, with a new node $z_{uv}$ replacing $u$ and $v$
+    \State $S(z_{uv}) \gets S(u) \cup S(v)$
+    \State \textbf{return} \Call{Contraction}{$G'$}
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\textbf{Analysis of the Contraction Algorithm}\\
+Consider a global minimum $(A,B)$ cut of $G$, and suppose that it has size $k$. In other words, there is a set $F$ of edges with one endpoint in $A$ and the other in $B$, such that $|F|=k$. We will prove that the contraction algorithm outputs the cut $(A,B)$ high probability.\\
+\textbf{Where things can go wrong}\\
+If an edge $e$ in $F$ was contracted, when we contract an edge, we irrevocablly decide that its endpoints will be in the same "side" of the cut. For an edge $e$ in $F$, its endpoints lie in different "sides" of the cut. If we contract $e$, we can't possibly produce the cut $(A,B)$.\\
+\textbf{Bounding the error probability}\\
+The probability of picking an edge in $F$: 
+\begin{itemize}
+    \item $F$ has $k$ edges, pick uniformly at random from $|E|$, so the probability is $\frac{k}{|E|}$.
+    \item To upper bound this quantity, we can lower bound $|E|$.
+    \item Claim: $|E| \geq \frac{nk}{2}$.
+\end{itemize}
+The probability of picking an edge in $F$ is at most $\frac{2}{n}$.\\
+After round $j$
+\begin{itemize}
+    \item Suppose that we have gone through $j$ rounds of the algorithm and we have not contracted any edge in $F$.
+    \item There are $n-j$ super-nodes in the graph $G^{\prime}$.
+    \item A cut in $G^{\prime}$ is also a cut in $G$.
+    \subitem The degree of every super-node of $G^{\prime}$ is at least $k$.
+    \subitem $|E_{G^{\prime}}| \geq \frac{k(n-j)}{2}$.
+    \subitem The mistake probability is $\frac{k}{|E_{G^{\prime}}|}=\frac{2}{n-j}$.
+\end{itemize}
+\textbf{Event}
+Mistake: Contract an edge in $F$.\\
+Event $E_j$:the algorithm makes a mistake in round $j$.\\
+\begin{align*}
+    Pr[E_j]& \geq 1-\frac{2}{n}\\
+    Pr[E_{j+1}\mid E_1 \cap E_2 \cap \dots \cap E_j]& \geq 1-\frac{2}{n-j}\\
+\end{align*}
+For the probability of not making a mistake in any round:
+\begin{align*}
+    \text{We know  } & Pr[E_1] \geq 1-\frac{2}{n}\\
+    &Pr[E_{j+1}\mid E_1 \cap E_2 \cap \dots \cap E_j] \geq 1-\frac{2}{n-j}\\
+    Pr[E_1 \cap E_2 \cap \dots \cap E_{n-2}] &= Pr[E_1] \cdot Pr[E_2 \mid E_1] \cdot \dots \cdot Pr[E_{n-2} \mid E_1 \cap E_2 \cap \dots \cap E_{n-3}]\\
+    &\geq (1-\frac{2}{n})(1-\frac{2}{n-1})\dots(1-\frac{2}{3})\\
+    &\geq \frac{n-2}{n} \cdot \frac{n-3}{n-1} \cdot \frac{n-4}{n-2} \cdot \dots \cdot \frac{1}{3}\\
+    &= \frac{2}{n(n-1)}\\
+    &= \binom{n}{2}^{-1}
+\end{align*}
+The contraction algorithm fails to find a global minimum $s-t$ cut with probability at most
+\begin{equation*}
+    1-\frac{1}{\binom{n}{2}} = 1-\frac{2}{n(n-1)}
+\end{equation*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
