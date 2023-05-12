@@ -2754,8 +2754,19 @@ The contraction algorithm fails to find a global minimum $s-t$ cut with probabil
 \begin{equation*}
     1-\frac{1}{\binom{n}{2}} = 1-\frac{2}{n(n-1)}
 \end{equation*}
+Suppose that we repeat an experiment multiple times, and each time the probability of success is $p > 0$.
+If we run the algorithm independently $\binom{n}{2}$ times, the probability of error becomes
+\begin{equation*}
+    (1-\frac{1}{\binom{n}{2}})^{\binom{n}{2}} \leq e^{-1} \approx 0.368
+\end{equation*}
+If we run the algorithm independently $\binom{n}{2} \ln n$ times, the probability of error becomes
+\begin{equation*}
+    (1-\frac{1}{\binom{n}{2}})^{\binom{n}{2} \ln n} \leq \frac{1}{n}
+\end{equation*}
+\textbf{Generally}
+We can run the algorithm independently a number of times, this will reduce the error probability and increase the running time. This is a trade-off between the running time and the error probability.\\
 
-
+\section{Types of Randomised Algs, Max Cut, and SAT}
 
 
 
