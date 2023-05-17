@@ -2767,11 +2767,273 @@ If we run the algorithm independently $\binom{n}{2} \ln n$ times, the probabilit
 We can run the algorithm independently a number of times, this will reduce the error probability and increase the running time. This is a trade-off between the running time and the error probability.\\
 
 \section{Types of Randomised Algs, Max Cut, and SAT}
+Two main types of randomised algorithms:
+\begin{itemize}
+    \item Monte Carlo:The algorithm computes the correct solution with high probability, and the algorithm always terminates
+    \subitem Example: The global minimum algorithm on multi-graphs
+    \item Las Vegas:The algorithm always computes the correct solution, and its running time is a random variable with bounded expectation.
+    \subitem Example: Randomised Partition (runs in expected time $O(n)$)
+    \subitem Example: Randomised Quicksort (runs in expected time $O(n \log n)$)
+\end{itemize}
+Markov's inequality: Let $X$ be a non-negative random variable and $a>0$. Then
+\begin{equation*}
+    Pr[X \geq a] \leq \frac{E[X]}{a}
+\end{equation*}
+\textbf{From las Vegas to Monte Carlo}\\
+Theorem: For any Las Vegas algorithm A, there is a Monte Carlo algorithm B that is correct with probability $\frac{1}{2}$.
+Proof: Algorithm A has run time $X$ with $\mathbb{E} [x] \leq T$, for some $T$.\\
+Let algorithm A run for a fixed time $2T$. By Markov's inequality
+\begin{equation*}
+    Pr[X \geq 2T] \leq \frac{\mathbb{E}[X]}{2T} \leq \frac{T}{2T} = \frac{1}{2}
+\end{equation*}
+Thus the probability that by time $2T$, algorithm A has not terminated is at least $\frac{1}{2}$.\\
+\textbf{Randomised Approximation Algorithms}\\
+Use randomisation to design good approximation algorithms.\\
+These algorithms will always terminate, their approximation ratio will be calculated with respect to their expected outcome.\\
+For maximisation problems, the approximation ratio is defined as
+\begin{equation*}
+    \max_x \frac{opt(x)}{E[obj(A(x))]}
+\end{equation*}
+Convention, to have approximation ratios always be $\geq 1$.\\
+\textbf{3 SAT}\\
+A CNF formula with $m$ clauses and $k$ literals.\\
+\begin{equation*}
+   \left.\varphi=\left(x_1 \vee x_5 \vee x_3\right) \wedge\left(x_2 \vee x_6 \vee\right\urcorner x_5 \right) \wedge \ldots \wedge\left(x_3 \vee x_8 \vee x_{12}\right)
+\end{equation*}
+An AND of ORs\\
+Each clause has three literals.\\
+Truth assignment: A value in $\{0,1\}$ of each variable $x_i$.\\
+Satisfying assignment: A truth assignment which makes the formula evaluate to 1.(=true)\\
+Computational problem 3SAT: Decide of the input formula $\varphi$ is satisfiable.\\
+\textbf{MAX 3SAT}\\
+A CNF formula with $m$ clauses and $k$ literals.\\
+\begin{equation*}
+   \left.\varphi=\left(x_1 \vee x_5 \vee x_3\right) \wedge\left(x_2 \vee x_6 \vee\right\urcorner x_5 \right) \wedge \ldots \wedge\left(x_3 \vee x_8 \vee x_{12}\right)
+\end{equation*}
+An AND of ORs\\
+Each clause has three literals.\\
+Truth assignment: A value in $\{0,1\}$ of each variable $x_i$.\\
+Satisfying assignment: A truth assignment which makes the formula evaluate to 1.(=true)\\
+Computational problem MAX-3SAT: Find an assignment that satisfies as many clauses of $\varphi$ as possible.\\
+\textbf{A 2-approximation for MAX-3SAT}\\
+Algorithm: For each variable $x_i$, set $x_i$ to 1 with probability $\frac{1}{2}$ and to 0 with probability $\frac{1}{2}$.\\
+Analysis: Let $Y_j$ be a random variable such that $Y_j = 1$ if clause $j$ is satisfied and $Y_j = 0$ otherwise.\\
+Let $X$ be a random variable ,which is equal to the number of satisfied clauses.\\
+By definition, $X = \sum_{j=1}^m Y_j$.\\
+we have that 
+\begin{equation*}
+    \mathbb{E}[X] = \mathbb{E}[\sum_{j=1}^m Y_j] = \sum_{j=1}^m \mathbb{E}[Y_j]= \sum_{j=1}^m Pr[\text{clause j is satisfied}]
+\end{equation*}
+The probability that each positive literal is set to 0, each negative literal is set to 1.
+each one of those happens with probability $\frac{1}{2}$, overall, this happens with probability $(\frac{1}{2})^{f(j)}$.\\
+$f(j)$ is the number of literals in clause $j$.\\
+The probability that clause $j$ is satisfied is
+\begin{equation*}
+    1-(\frac{1}{2})^{f(j)} \geq \frac{1}{2}
+\end{equation*}
+we have:
+\begin{equation*}
+    E[X]=E[\sum_{j=1}^m Y_j] = \sum_{j=1}^m \mathbb{E}[Y_j] = \sum_{j=1}^m Pr[\text{clause j is satisfied}] \geq \frac{m}{2}
+\end{equation*}
+If we use the trivial upper bound of $m$ on the value of the optimal, we get the 2-approximation.\\
+\textbf{Analysis of MAX 3SAT}\\
+The probability that clause $j$ is satisfied is
+\begin{equation*}
+    1-(\frac{1}{2})^{f(j)} =1 - (\frac{1}{2})^3 = \frac{7}{8}
+\end{equation*}
+we have:
+\begin{equation*}
+    E[X]=E[\sum_{j=1}^m Y_j] = \sum_{j=1}^m \mathbb{E}[Y_j] = \sum_{j=1}^m Pr[\text{clause j is satisfied}] = \frac{7}{8}m
+\end{equation*}
+\textbf{Minimum Cut vs Maximum Cut}\\
+Minimum Cut can be solved in polynomial time.\\
+\indent Always correctly, by flow algorithms.\\
+\indent Almost always correctly, by the contraction algorithm.\\
+Maximum Cut is NP-hard.\\
+\textbf{MAX-CUT algorithm}
+\begin{itemize}
+    \item For every vertex $v \in V$ in dependently,
+    \subitem place $v \in A$ with probability $\frac{1}{2}$ 
+    \subitem place $v \in B$ with probability $\frac{1}{2}$.
+    \item We will prove that the approximation ratio of this algorithm for the maximum cut problem is 2.
+\end{itemize}
+\textbf{Analysis}\\
+Let $X_{ij}$ be a random variable such that $X_{ij} = 1$ if $(i,j)$ crosses the cut and $X_{ij} = 0$ otherwise.\\
+Let $Z$ be a random variable, which is equal to the number of edges that cross the cut.\\
+By definition, $Z = \sum_{(i,j) \in E} X_{ij}$.\\
+We have that
+\begin{equation*}
+    \mathbb{E}[Z] = \mathbb{E}[\sum_{(i,j) \in E} X_{ij}] = \sum_{(i,j) \in E} \mathbb{E}[X_{ij}] = \sum_{(i,j) \in E} Pr[(i,j) \text{crosses the cut}]
+\end{equation*}
+The probability that $(i,j)$ crosses the cut is $\frac{1}{2}$.\\
+\begin{equation*}
+    E[Z] = E[\sum_{(i,j) \in E} X_{ij}] = \sum_{(i,j) \in E} \mathbb{E}[X_{ij}] = \sum_{(i,j) \in E} Pr[(i,j) \text{crosses the cut}] = \frac{1}{2}m
+\end{equation*}
+Compare the solution
+The randomised algorithm works well in expectation. The deterministic algorithm works well always.\\
+\textbf{Derandomisation}
+\begin{itemize}
+    \item Sometimes it is possible to "derandomise" a randomised algorithm $A_{rand}$ and obtain a deterministic algorithm $A_{det}$.
+    \item The performance of $A_{det}$ is the same as the expected performance of $A_{rand}$.
+    \item We can use randomisation at no extra cost.
+    \item Different mathods for derandomisation.
+    \subitem Can be very cpmplicated (pseudo-random generators).
+    \subitem Can be relatively simple (conditional expectations).
+\end{itemize}
 
+\section{Derandomisation and Randomised Rounding}
+Algorithm: For each variable $x_i$, set $x_i$ to 1 with probability $\frac{1}{2}$ and to 0 with probability $\frac{1}{2}$.\\
+Algorithm: Set variable $x_i$ to 1 or 0 deterministically, and the remining variables to 1 with probability $\frac{1}{2}$ and to 0 with probability $\frac{1}{2}$.\\
+If $W$ is the number of clauses satisfied then we have
+\begin{align*}
+    \mathbb{E}[W] &= \mathbb{E}[W|x_1 \leftarrow 1]\cdot Pr[x_1 \leftarrow 1] + \mathbb{E}[W|x_1 \leftarrow 0]\cdot Pr[x_1 \leftarrow 0]\\
+    &= \frac{1}{2}\mathbb{E}[W|x_1 \leftarrow 1] + \mathbb{E}[W|x_1 \leftarrow 0]\\
+\end{align*}
+We set $x_1$ to 1 if $\mathbb{E}[W|x_1 \leftarrow 1] \geq \mathbb{E}[W|x_1 \leftarrow 0]$ and to 0 otherwise.\\
+Generally, if $b_1$ is piacked to maximise the conditional expectation, then
+\begin{equation*}
+    \mathbb{E}[W|x_1 \leftarrow b_1] \geq \mathbb{E}[W]
+\end{equation*}
+\textbf{Applying this to all variables}\\
+Assume that we have set variables $x_1, \dots, x_i$ to $b_1, \dots, b_i$ this way.\\
+We set $x_{i+1}$ to 1 if this holds and to 0 otherwise.\\
+\begin{align*}
+        & \mathbb{E}\left[W \mid x_1 \leftarrow b_1, x_2 \leftarrow b_2, \ldots, x_i \leftarrow b_i, x_{i+1} \leftarrow 1\right] \geq \\
+        & \mathbb{E}\left[W \mid x_1 \leftarrow b_1, x_2 \leftarrow b_2, \ldots, x_i \leftarrow b_i, x_{i+1} \leftarrow 0\right]
+\end{align*}
+Again, if $b_{i+1}$ is picked to maximise the conditional expectation, then
+\begin{equation*}
+    \mathbb{E}[W \mid x_1 \leftarrow b_1, x_2 \leftarrow b_2, \ldots, x_i \leftarrow b_i, x_{i+1} \leftarrow b_{i+1}] \geq \mathbb{E}[W]
+\end{equation*}
+In the end we have set all variables deterministically.\\
+We have that
+\begin{equation*}
+    \mathbb{E}[W \mid x_1 \leftarrow b_1, x_2 \leftarrow b_2, \ldots, x_i \leftarrow b_i, x_{i+1} \leftarrow b_{i+1}] \geq \mathbb{E}[W]
+\end{equation*}
+We know that $\mathbb{E} \geq \frac{1}{2} \cdot OPT$\\
+We have devised a deterministic 2-approximation algorithm.\\
+\textbf{Computing the expectations}\\
+We have to be able to compute the additional expectations in polynomial time.\\
+\begin{align*}
+    \begin{gathered}
+        \mathbb{E}\left[W \mid x_1 \leftarrow b_1, \ldots, x_i \leftarrow b_i\right]=\sum_{j=1}^m \mathbb{E}\left[Y_j \mid x_1 \leftarrow b_1, \ldots, x_i \leftarrow b_i\right] \\
+        =\sum_{j=1}^m \operatorname{Pr}\left[\text { clause } C_j \text { is satisfied } \mid x_1 \leftarrow b_1, \ldots, x_i \leftarrow b_i\right]
+        \end{gathered}
+\end{align*}
+The probability is
+\begin{itemize}
+    \item 1 if the variables already set satisfy the clause.
+    \item $1-\frac{1}{2^k}$ otherwise, where $k$ is the number of unset variables in the clause.
+\end{itemize}
+Derandomisation using conditional expectations
+Works for a wide variety of applications as long as
+\begin{itemize}
+    \item The variables are set independently
+    \item The conditional expectations can be calculated in polynomial time
+\end{itemize}
+\textbf{Randomised rounding}\\
+We formulate the problem as an ILP.\\
+We write the LP-relaxation.\\
+We solve the LP-relaxation.\\
+We round the variables with probabilities that can depend on their values.\\
+\noindent
+MAX SAT as an ILP
+\begin{align*}
+    \text{maximise } & \sum_{j=1}^m y_j\\
+    \text{subject to } & \sum_{i \in P_j}y_i+\sum_{i \in N_j}(1-y_i) \geq z_j \text{ for all } C_j=\bigvee_{i \in P_j}x_i \vee \bigvee_{i \in N_j}\bar{x}_i\\
+    & y_i \in \{0,1\} \text{ for all } i \in \{1, \ldots, n\}\\
+    & 0 \leq z_j \leq 1 \text{ for all } j \in \{1, \ldots, m\}
+\end{align*}
+MAX SAT LP-relaxation
+\begin{align*}
+    \text{maximise } & \sum_{j=1}^m z_j\\
+    \text{subject to } & \sum_{i \in P_j}y_i+\sum_{i \in N_j}(1-y_i) \geq z_j \text{ for all } C_j=\bigvee_{i \in P_j}x_i \vee \bigvee_{i \in N_j}\bar{x}_i\\
+    & 0 \leq y_i \leq 1 \text{ for all } i \in \{1, \ldots, n\}\\
+    & 0 \leq z_j \leq 1 \text{ for all } j \in \{1, \ldots, m\}
+\end{align*}
+Let $(y^*, z^*)$ be an optimal solution to the LP-relaxation.\\
+Rounding: Set $x_i$ to true independently with probability $y_i^*$.\\
+\textbf{Analysis}\\
+\begin{align*}
+    Pr[\text{clause } C_j \text{ is not satisfied}] &= \prod_{i \in P_j}(1-y_i^*) \prod_{i \in N_j}y_i^*\\
+    &\leq \left[\frac{1}{\ell_j}\left(\sum_{i \in P_j}\left(1-y_i^*\right)+\sum_{i \in N_j} y_i^*\right)\right]^{\ell_j}\\
+    &\leq \left[1-\frac{1}{\ell_j}\left(\sum_{i \in P_j} y_i^*+\sum_{i \in N_j}\left(1-y_i^*\right)\right)\right]^{\ell_j}\\
+    &\leq \left[1-\frac{1}{\ell_j}z_j^*\right]^{\ell_j}
+\end{align*}
+and so we have that
+\begin{align*}
+    Pr[\text{clause } C_j \text{ is satisfied}] \geq 1-\left[1-\frac{1}{\ell_j}z_j^*\right]^{\ell_j} \geq 1-\left[1-\frac{1}{\ell_j}\right]^{\ell_j}z_j^*
+\end{align*}
+\textbf{Analysis}\\
+\begin{align*}
+    \mathbb{E}[W] &= \sum_{j=1}^mPr[\text{clause } C_j \text{ is satisfied}]\\
+    &\geq \sum_{j=1}^m\left(1-\left[1-\frac{1}{\ell_j}\right]^{\ell_j}\right)z_j^*\\
+    &\geq \min_{\ell \geq 1}\left[ 1-\left(1-\frac{1}{\ell}\right)^\ell\right]\sum_{j=1}^mz_j^*\\
+    &\geq \left(1-\frac{1}{e}\right)\sum_{j=1}^mz_j^*\\
+    &= \left(1-\frac{1}{e}\right)OPT
+\end{align*}
+\textbf{Randomised rounding for MAX-SAT}\\
+Our randomised algorithm gives an approximation ratio of $\frac{1}{1-\frac{1}{e}} \approx 1.59$.\\
+This is better than the deterministic 2-approximation algorithm.\\
+This is better than 1.618.\\
+\textbf{The better of the two}\\
+Algorithm 1:
+\begin{equation*}
+    Pr[\text{clause } C_j \text{ is satisfied}] \geq \left(1-(\frac{1}{2})^{\ell_j}\right)
+\end{equation*}
+Algorithm 2:
+\begin{equation*}
+    Pr[\text{clause } C_j \text{ is satisfied}] \geq \left[1-\left(1-\frac{1}{\ell_j}\right)^{\ell_j}\right]z_j^*
+\end{equation*}
+If the clause is long, Algorithm 1 is better.\\
+If the clause is short, Algorithm 2 is better.\\
+Algorithm 3: Choose the better of the two.\\
+\textbf{Analysis}\\
+\begin{align*}
+    \mathbb{E}[W] &= \mathbb{E}[\max(W_1, W_2)]\\
+    &\geq \mathbb{E}\left[\frac{1}{2}W_1+\frac{1}{2}W_2\right]\\
+    &\geq \frac{1}{2}\mathbb{E}[W_1]+\frac{1}{2}\mathbb{E}[W_2]\\
+    &\geq \frac{1}{2}\sum_{j=1}^{m}\left[1-(\frac{1}{2})^{\ell_j}\right]+\frac{1}{2}\sum_{j=1}^{m}z_j^*\left[1-\left(1-\frac{1}{\ell_j}\right)^{\ell_j}\right]\\
+    &\geq \sum_{j=1}^{m}z_j^*\left[\frac{1}{2}\left(1-\left(1-\frac{1}{\ell_j}\right)^{\ell_j}\right)+\frac{1}{2}\left(1-\left(\frac{1}{2}\right)^{\ell_j}\right)\right]\\
+\end{align*}
+This quantity
+\begin{equation*}
+    \frac{1}{2}\left(1-\left(1-\frac{1}{\ell_j}\right)^{\ell_j}\right)+\frac{1}{2}\left(1-\left(\frac{1}{2}\right)^{\ell_j}\right)
+\end{equation*}
+For $\ell_j=1$, it evaluates to $\frac{1}{2}$.\\
+For $\ell_j=2$, it evaluates to $\frac{3}{4}$.\\
+For $\ell_j \geq 3$, we have that
+\begin{align*}
+    \left(1-(\frac{1}{2})^{\ell_j}\right) &\geq \frac{7}{8}\\
+    \left(1-\left(1-\frac{1}{\ell_j}\right)^{\ell_j}\right) &\geq 1-\frac{1}{e}\\
+    \frac{1}{2}\cdot \frac{7}{8}+\frac{1}{2}\left(1-\frac{1}{e}\right) &\approx 0.753 \geq \frac{3}{4}\\
+    \mathbb{E}[W] &\geq \frac{3}{4}\sum_{j=1}^{m}z_j^*= \frac{3}{4}OPT
+\end{align*}
+The "better of the two" algorithm has approximation ratio $\frac{4}{3}\approx 1.33$.\\
+\textbf{integrality Gap of MAX-SAT}\\
+Consider the formula:
+\begin{equation*}
+    \left.\left.\left.\left.\left(X_1 \vee X_2\right) \wedge(\urcorner X_1 \vee X_2\right) \wedge\left(X_1 \vee\right\urcorner X_2\right) \wedge(\urcorner X_1 \vee\right\urcorner X_2\right)
+\end{equation*}
+the optimal integral solution satisfied 3 clauses.\\
+The optimal fractional solution sets $y_1=y_2=\frac{1}{2}$ and $z_j =1 \forall j$ and satisfies 4 clauses.\\
+The integrality gap is at least $\frac{4}{3}$.\\
+Set $x_i$ to true independently with probability $f(y_i^*)$ for some function $f$ such that $1-4^{-x} \leq f(x) \leq 4^{x-1}$.\\
+\textbf{Analysis}\\
+\begin{align*}
+    Pr[\text{clause } C_j \text{ is not satisfied}] &= \prod_{i \in P_j}(1-f(y_i^*))\prod_{i \in N_j}f(y_i^*)\\
+    &\leq \prod_{i \in P_j}4^{-y_i^*}\prod_{i \in N_j}4^{y_i^*-1}\\
+    &= 4^{-\left(\sum_{i \in P_j}y_i^*+\sum_{i \in N_j}(1-y_i^*)\right)}\\
+    &\leq 4^{-z_j^*}\\
+    Pr[\text{clause } C_j \text{ is satisfied}] &\geq 1-4^{-z_j^*}\geq \left(1-\frac{1}{4}\right)z_j^* = \frac{3}{4}z_j^*\\
+    \mathbb{E}[W] &= \sum_{j=1}^{m}Pr[\text{clause } C_j \text{ is satisfied}]\\
+    &\geq \frac{3}{4}\sum_{j=1}^{m}z_j^*\\
+    &\geq \frac{3}{4}OPT
+\end{align*}
+The more sophisticated RR algorithm has approximation an approximation ratio of $\frac{4}{3} \approx 1.33$.\\
 
-
-
-
+\chapter{Online Algorithms}
+\section{Online Algorithms, Load Ballancing, Paging}
 
 
 
