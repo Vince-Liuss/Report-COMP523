@@ -3036,9 +3036,25 @@ The more sophisticated RR algorithm has approximation an approximation ratio of 
 \section{Online Algorithms, Load Ballancing, Paging}
 \textbf{Motivating Example}\\
 Suppose that you need to take 4 modules in your Masters programme, but you dont't know the difficulty, the content, or the lecturer of each module. You need to make a decision based on limitted information.\\
+Suppose that you have completed your Masters programme successfully and now you are looking for jobs. You have made several applications and you receive an offer from some company. Should you accept it, or should you wait to see if you might get a better offer from another company?\\
+Let’s say that you make a series of local (myopic) decisions, based only on information that you have seen so far (and possibly what you expect to see in the future).You can compare the quality of your decisions to that of theclairvoyant.If they are not much worse, then you can convince yourself that you have made good decisions\\
 
-
-
+\noindent
+Suppose that the input of a problem $P$ is given steps.\\
+You have to make a decision in every step. \\
+The goal is to optimaise some objective.\\
+You don't know the length of the input- the input supply might stop at any point.\\
+You will compare against the offline optimal algorithm, which knows the future, and computes the optimal solution on the entire input.\\
+\textbf{Online algorithms}: An algorithm that makes decisions now about events that will happen in the future, without having knowledge of the future events.\\
+\textbf{Online Load Balancing}\\
+- We have a set of $\mathrm{m}$ identical machines $\mathrm{M}_1, \ldots, \mathrm{M}_{\mathrm{m}}$\\
+- We have a set of $n$ jobs, with job j having processing time $t$.\\
+- \indent The jobs arrive over time, one in each time step.\\
+- We want to assign every job to some machine.\\
+- \indent We will assign a job immediately upon arrival to some machine.\\
+- Let $A(i)$ be the set of jobs assigned to machine i.\\
+- The load of machine $\mathrm{i}$ is $\quad T_i=\sum_{j \in A(i)} t_j$\\
+- The goal is to minimise the makespan, i.e., $\mathrm{T}=\max _{\mathrm{i}} \mathrm{T}_{\mathrm{i}}$\\
 
 
 
