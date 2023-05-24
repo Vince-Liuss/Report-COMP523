@@ -3055,22 +3055,151 @@ You will compare against the offline optimal algorithm, which knows the future, 
 - Let $A(i)$ be the set of jobs assigned to machine i.\\
 - The load of machine $\mathrm{i}$ is $\quad T_i=\sum_{j \in A(i)} t_j$\\
 - The goal is to minimise the makespan, i.e., $\mathrm{T}=\max _{\mathrm{i}} \mathrm{T}_{\mathrm{i}}$\\
+\textbf{Competitive ratio}\\
+The comptitive ratio of algorithm $A$ is defined as
+\begin{equation*}
+    \max _x \frac{obj(A(x))}{opt(x)}
+\end{equation*}
+\textbf{Competitive Ratio vs Approximation Ratio}\\
+Approximation ratio: The constraint of our algorithm is that it must run in polynomial time. If we didn’t have atime constraint, we would obtain the optimal.\\
+Competitive Ratio: The constraint of our algorithm is that it does not know the future part of the input. If we had access to the future part of the input, we would obtain the optimal.\\
+\textbf{Greedy Algorithm for load balancing}\\
+\begin{algorithm}[H]
+\caption{Greedy Algorithm for load balancing}
+\begin{algorithmic}[1]
+\State set $T_i=0$ and $A(i)=\emptyset$ for all $i$
+\For{each job $j$}
+\State Let $M_i$ be the machine that achieves the minimum $\min_kT_k$
+\State assign $j$ to machine $i$ with minimum load $T_i$
+\State $T_i=T_i+t_j$
+\State $A(i)=A(i) \cup \{j\}$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+\noindent
+\textbf{Greedy Algorithm for online load balancing}\\
+• Pick the job that arrives in the current time step.\\
+• Assign it to the machine with the smallest load so far.\\
+• Remove it from the pile of jobs.\\
+The competitive ratio of the greedy algorithm is $2-1/m$.\\
+\textbf{lower bounds}: We can show lower bounds on the competitive ratio of any online algorithm, using elementary arguments.\\
+This comes in contrast to approximation algorithms, where Inapproximability results typically require advanced techniques.\\
+\textbf{terminology}:\\
+We will say that the input is given by an adversary, who wishes to maximise the competitive ratio of the algorithm. This is equivalent to considering the worst case input sequence.\\
+\textbf{Better Algorithms}\\
+It is possible to design better online algorithms for the scheduling problem.\\
+For example, for $m=4$, there is an algorithm with competitive ratio at 1.733 .\\
+Lower bound: For $m=4$, no online algorithm has competitive ratio better than 1.732 .\\
+For general $m$, the best possible competitive ratio is between 1.88 and 1.92.\\
+Idea: The Tetris principle - maintain imbalance.\\
 
+\noindent
+\textbf{Paging}\\
+We have two types of memory, a fast memory (cache) and a slow memory.\\
+The cache has capacity k pages, the slow memory has capacity n pages.\\
+We have a sequence of page requests.\\
+If the page is in the cache, the algorithm returns it at no cost.\\
+If the page is not in the cache, the algorithm "faults" and has to bring it from the cache, paying a cost of 1.\\
+The algorithm must also choose a page in the cache to replace with the page brought from the slow memory.\\
+The online algorithm makes $x$ “faults”.\\
+The offline optimal makes $y \leq x$ “faults”.\\
+\textbf{Theorem}: The competitive ratio of any online algorithm for paging is at least $k$.
+\textbf{Lower bound}
+\begin{itemize}
+    \item The algorithm "faults" once at every step.
+    \item What about the offline optimal?
+    \subitem Consider the strategy: "When replacing a page, replace the one that will be requested the furthest in the future".
+    \item Suppose that OPT "faults" on some page p. OPT replaces a page (to bring in p) that will not be requested in the next k-1 steps.
+    \subitem OPT "faults" once every k steps.
+    \subitem The competitive ratio is at least k.
+\end{itemize}
+\textbf{Paging Algorithms}
+\begin{itemize}
+    \item LRU(Least Recently Used): Replace the page that was requested the least recently
+    \item FIFO(First In First Out): Replace the page that has been in the cache the longest
+    \item LIFO(Last In First Out): Replace the page that has been in the cache the shortest
+    \item LFU(Least Frequently Used): Replace the page that was requested the least frequently so far
+    \item MIN(Offline Optimal): Replace the page whose next request happens furthest in the future
+\end{itemize}
+\textbf{Theorem}: LRU and FIFO have competitive ratio at most k.\\
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\section{Marking Algorithm \& Randomised Paging}
+\textbf{Marking Algorithm}:\\
+consider the following algorithm:
+\begin{itemize}
+    \item \indent The algorithm proceeds in phases.
+    \item \indent At the beginning of a phase, all the pages are unmarked.
+    \item \indent Whenever a page is requested, it is marked.
+    \item \indent When a "fault" occurs, the algorithm replaces an unmarked page.
+    \item \indent When all pages in the cache are marked, and a request for an unmarked page occurs, the phase ends.
+\end{itemize}
+\textbf{Theorem}: The marking algorithm has competitive ratio $k$.\\
+The algorithm "faults" at most k times in every phase.\\
+\indent Every time it fails, the requested page is marked.\\
+\indent If all pages in the cache are marked and a new page is requested, then the phase changes.\\
+The optimal offline algorithm "faults" at least once in every phase.\\
+\indent The phase ends when $\mathrm{k}+1$ different pages are requested.\\
+\indent The optimal offline algorithm can only keep at most $k$ of those in the cache.\\
+\textbf{Theorem}: LRU and FIFO have competitive ratio at most k.\\
+\textbf{Proof}: LRU and FIFO are marking algorithms.\\
+\textbf{Corollary}: LRU and FIFO are the best online algorithms for paging.\\
+\textbf{randomisation}:\\
+We will use randomisation to achieve a better competitive ratio.\\
+We have to make a distinction, regarding the power of the adversary:\\
+\indent Oblivious Adversary: The adversary fixes an input sequence in advance.\\
+\indent Adaptive Adversary: The adversary can change the input sequence based on the realisations of randomness of the choices of the algorithm.\\
+A Randomised Algorithm $A$ has competitive ratio $r$ if there exists a constant c such that for all inputs $x$ :
+\begin{align*}
+\mathbb{E}[\operatorname{obj}(A(x))] \leq r^* \operatorname{opt}(x)+c
+\end{align*}
+\textbf{Randomised marking algorithm}:
+\begin{itemize}
+    \item \indent The algorithm proceeds in phases.
+    \item \indent At the beginning of a phase, all the pages are unmarked.
+    \item \indent Whenever a page is requested, it is marked.
+    \item \indent When a "fault" occurs, the algorithm replaces an unmarked page, chosen uniformly at random.
+    \item \indent When all pages in the cache are marked, and a request for an unmarked page occurs, the phase ends.
+\end{itemize}
+Recall the $k$-th Harmonic number:
+\begin{align*}
+H_k=\sum_{i=1}^{k} \frac{1}{i}
+\end{align*}
+\textbf{Theorem}: The randomised marking algorithm has competitive ratio $2H(n)$ against Oblivious Adversaries.\\
+\begin{equation*}
+    H(k)=O(\log k)
+\end{equation*}
+\textbf{Proof};\\
+Assume without loss of generality that RMA makes "faults" on the first request.\\
+Consider phase $i$.\\
+\indent Let $m_i$ be the number of "new" pages requested in the phase (i.e. pages that were not requested in previous phases).\\
+\indent call the remaining $k-m_i$ pages "old".\\
+Every time a "new" page is requested, we have a "fault".\\
+Every time an "old" page is requested, we may have "fault".\\
+\indent the "fault" occurs if we replaced the "old" page with a "new" one.\\
+Assume that the $m_i$ request for "new" pages come first and the $k-m_i$ requests for "old" pages come last.\\
+\indent The probability that a "fault" occurs is $\frac{m_i}{k}$.\\
+There are $k-m_i-(j-1)$ unmarked pages in cache, this is a random subset of the $k-(j-1)$ old pages not requested so far.\\
+Don't fault with probability $\frac{k-m_i-(j-1)}{k-(j-1)}$, thus the probability of a "fault" is:
+\begin{align*}
+1-\frac{k-m_i-(j-1)}{k-(j-1)}=\frac{m_i}{k-(j-1)}
+\end{align*}
+The expected number of "faults" in phase $i$ is:
+\begin{align*}
+m_i+\frac{m_i}{k}+\frac{m_i}{k-1}+\cdots+\frac{m_i}{k-(m_i-1)} \geq m_i \cdot H(k)
+\end{align*}
+Summing over all phases, we get:
+\begin{align*}
+\mathbb{E}[\text{cost of RMA}] \leq H(k)\sum_{i=1}^{n}m_i
+\end{align*}
+\textbf{about OPT}\\
+What is the number of "faults" that the optimal offline algorithm makes?\\
+Let $n_{i-1}$ and $n_i$ be the number of "faults" of OPT in phases $i-1$ and $i$.\\
+At least $k+m_i$ distinct pages requested in phases $\mathrm{i}-1$ and $\mathrm{i}$.\\
+Cache has size $k$, thus we have $n_{i-1}+n_i \geq m_i$.\\
+Summing pairs of phases, we get:
+\begin{align*}
+O P T \geq \sum_{i=1}^{\frac{n}{2}} m_{2 i} \quad \text { and } \quad O P T \geq \sum_{i=0}^{\frac{n}{2}-1} m_{2 i+1} \quad \text { thus } \quad O P T \geq \frac{1}{2} \sum_{i=1}^n m_i
+\end{align*}
+The competitive ratio of RMA is $2 H(k)$.\\
 
 \end{document}
